@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+econosuite/__init__.py
+econosuite/cli.py
+econosuite.egg-info/PKG-INFO
+econosuite.egg-info/SOURCES.txt
+econosuite.egg-info/dependency_links.txt
+econosuite.egg-info/entry_points.txt
+econosuite.egg-info/requires.txt
+econosuite.egg-info/top_level.txt

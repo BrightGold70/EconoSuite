@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "econosuite"
+version = "0.1.0"
+description = "CLI for preparing economics manuscripts in docx"
+authors = [
+    { name="Researcher" }
+]
+dependencies = [
+    "click",
+    "python-docx",
+    "pandas",
+    "pyyaml",
+    "openpyxl",
+    "notebooklm-py",
+    "mcp",
+    "watchdog"
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[project.scripts]
+econosuite = "econosuite.cli:cli"
+mcp-server-econosuite = "econosuite.mcp_server:main"
