@@ -1,0 +1,168 @@
+{
+  "document_type": "protocol-phase2",
+  "display_name": "Phase 2 Single-Arm Protocol",
+  "plugin": "ProtocolPlugin",
+  "sections": [
+    {
+      "id": "01_background",
+      "title": "Background and Rationale",
+      "mode": "llm",
+      "kind": "body",
+      "word_target": 850,
+      "depends_on": [],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Summarize disease context, preliminary efficacy and safety signals, and the rationale for a phase 2 single-arm design."
+    },
+    {
+      "id": "02_objectives",
+      "title": "Objectives",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 450,
+      "depends_on": [
+        "01_background"
+      ],
+      "quality_category": "endpoint_clarity",
+      "llm_prompt_hint": "State primary, secondary, and exploratory objectives appropriate for a signal-seeking phase 2 study."
+    },
+    {
+      "id": "03_study_design",
+      "title": "Study Design",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 750,
+      "depends_on": [
+        "02_objectives"
+      ],
+      "quality_category": "regulatory_completeness",
+      "llm_prompt_hint": "Describe the phase 2 single-arm design, enrollment schema, treatment regimen, treatment cycles, and follow-up plan."
+    },
+    {
+      "id": "04_eligibility",
+      "title": "Eligibility Criteria",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 500,
+      "depends_on": [
+        "03_study_design"
+      ],
+      "quality_category": "regulatory_completeness",
+      "llm_prompt_hint": "List inclusion and exclusion criteria with disease definition, prior therapy, organ function, and safety constraints."
+    },
+    {
+      "id": "05_procedures",
+      "title": "Study Procedures",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 800,
+      "depends_on": [
+        "03_study_design",
+        "04_eligibility"
+      ],
+      "quality_category": "operational_feasibility",
+      "llm_prompt_hint": "Outline screening, treatment administration, response assessments, safety monitoring, dose modifications, and long-term follow-up."
+    },
+    {
+      "id": "06_endpoints",
+      "title": "Outcome Measures",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 600,
+      "depends_on": [
+        "02_objectives",
+        "05_procedures"
+      ],
+      "quality_category": "endpoint_clarity",
+      "llm_prompt_hint": "Define the primary efficacy endpoint, key secondary endpoints, safety endpoints, and exact assessment rules."
+    },
+    {
+      "id": "07_statistical",
+      "title": "Statistical Analysis Plan",
+      "mode": "llm",
+      "kind": "body",
+      "word_target": 950,
+      "depends_on": [
+        "06_endpoints",
+        "11_simon_two_stage"
+      ],
+      "quality_category": "analysis_rigor",
+      "llm_prompt_hint": "Specify hypothesis thresholds, analysis populations, confidence intervals, sample size assumptions, futility logic, and missing data handling."
+    },
+    {
+      "id": "08_ethics",
+      "title": "Ethical Considerations",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 400,
+      "depends_on": [
+        "03_study_design",
+        "04_eligibility"
+      ],
+      "quality_category": "regulatory_completeness",
+      "llm_prompt_hint": "Cover consent, risk-benefit balance, toxicity management, reproductive precautions, confidentiality, and oversight."
+    },
+    {
+      "id": "09_data_mgmt",
+      "title": "Data Management",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 450,
+      "depends_on": [
+        "05_procedures",
+        "08_ethics"
+      ],
+      "quality_category": "operational_feasibility",
+      "llm_prompt_hint": "Describe CRF/EDC workflow, monitoring, source documentation, edit checks, and retention requirements."
+    },
+    {
+      "id": "10_references",
+      "title": "References",
+      "mode": "structured",
+      "kind": "back_matter",
+      "word_target": 0,
+      "depends_on": [
+        "01_background",
+        "07_statistical",
+        "08_ethics"
+      ],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Compile cited literature, response criteria, CTCAE references, and methodology standards."
+    },
+    {
+      "id": "11_simon_two_stage",
+      "title": "Simon Two-Stage Design Parameters",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 400,
+      "depends_on": [
+        "02_objectives",
+        "06_endpoints"
+      ],
+      "quality_category": "analysis_rigor",
+      "llm_prompt_hint": "State null and alternative response rates, alpha, power, stage 1 enrollment, futility boundary, and total sample size."
+    }
+  ],
+  "quality": {
+    "pass_threshold": 85,
+    "max_refinement_iterations": 3,
+    "categories": [
+      "regulatory_completeness",
+      "evidence_grounding",
+      "endpoint_clarity",
+      "operational_feasibility",
+      "analysis_rigor"
+    ]
+  },
+  "compilation": {
+    "format": "docx",
+    "renderer": "bookshelf",
+    "preamble": [
+      "title_page",
+      "synopsis_table"
+    ],
+    "postprocess": [
+      "cwyw_tags",
+      "figure_replacement"
+    ]
+  }
+}

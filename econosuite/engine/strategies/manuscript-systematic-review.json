@@ -1,0 +1,95 @@
+{
+  "document_type": "manuscript-systematic-review",
+  "display_name": "Systematic Review Manuscript",
+  "plugin": "ManuscriptPlugin",
+  "sections": [
+    {
+      "id": "01_abstract",
+      "title": "Abstract",
+      "mode": "llm",
+      "kind": "front_matter",
+      "word_target": 300,
+      "depends_on": [],
+      "quality_category": "completeness",
+      "llm_prompt_hint": "Write a structured abstract following PRISMA 2020 format: Objective, Data Sources, Study Selection, Data Extraction, Results, Conclusions."
+    },
+    {
+      "id": "02_introduction",
+      "title": "Introduction",
+      "mode": "llm",
+      "kind": "body",
+      "word_target": 600,
+      "depends_on": [],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Describe the clinical question, rationale for the review, and specific objectives."
+    },
+    {
+      "id": "03_methods",
+      "title": "Methods",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 1500,
+      "depends_on": ["02_introduction"],
+      "quality_category": "methodological_rigor",
+      "llm_prompt_hint": "Detail search strategy (databases, terms, dates), eligibility criteria, screening process, data extraction, risk of bias assessment, and synthesis methods. Follow PRISMA 2020."
+    },
+    {
+      "id": "04_results",
+      "title": "Results",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 2000,
+      "depends_on": ["03_methods"],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Report PRISMA flow diagram numbers, study characteristics, risk of bias results, and synthesis findings (forest plots if meta-analysis)."
+    },
+    {
+      "id": "05_discussion",
+      "title": "Discussion",
+      "mode": "llm",
+      "kind": "body",
+      "word_target": 1200,
+      "depends_on": ["04_results"],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Summarize evidence, discuss quality and heterogeneity, compare with previous reviews, address limitations, and state implications."
+    },
+    {
+      "id": "06_prisma_checklist",
+      "title": "PRISMA 2020 Checklist",
+      "mode": "structured",
+      "kind": "back_matter",
+      "word_target": 0,
+      "depends_on": ["03_methods", "04_results"],
+      "quality_category": "completeness",
+      "llm_prompt_hint": "Generate PRISMA 2020 checklist mapping each item to the manuscript location."
+    },
+    {
+      "id": "07_references",
+      "title": "References",
+      "mode": "structured",
+      "kind": "back_matter",
+      "word_target": 0,
+      "depends_on": ["02_introduction", "03_methods", "04_results", "05_discussion"],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Compile cited literature using Vancouver numbered citation style."
+    }
+  ],
+  "quality": {
+    "pass_threshold": 85,
+    "max_refinement_iterations": 3,
+    "categories": [
+      "evidence_grounding",
+      "completeness",
+      "methodological_rigor"
+    ]
+  },
+  "compilation": {
+    "format": "docx",
+    "renderer": "bookshelf",
+    "preamble": [],
+    "postprocess": [
+      "cwyw_tags",
+      "figure_replacement"
+    ]
+  }
+}

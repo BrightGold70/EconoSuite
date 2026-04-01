@@ -1,0 +1,85 @@
+{
+  "document_type": "manuscript-imrad",
+  "display_name": "IMRAD Manuscript",
+  "plugin": "ManuscriptPlugin",
+  "sections": [
+    {
+      "id": "01_abstract",
+      "title": "Abstract",
+      "mode": "llm",
+      "kind": "front_matter",
+      "word_target": 250,
+      "depends_on": [],
+      "quality_category": "completeness",
+      "llm_prompt_hint": "Write a structured abstract with Background, Methods, Results, and Conclusions subsections."
+    },
+    {
+      "id": "02_introduction",
+      "title": "Introduction",
+      "mode": "llm",
+      "kind": "body",
+      "word_target": 800,
+      "depends_on": [],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Introduce the clinical problem, summarize key literature gaps, and state the study hypothesis or objective."
+    },
+    {
+      "id": "03_methods",
+      "title": "Methods",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 1200,
+      "depends_on": ["02_introduction"],
+      "quality_category": "methodological_rigor",
+      "llm_prompt_hint": "Describe study design, patient selection, interventions, endpoints, and statistical methods."
+    },
+    {
+      "id": "04_results",
+      "title": "Results",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 1500,
+      "depends_on": ["03_methods"],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Present findings in logical order: patient characteristics, primary endpoint, secondary endpoints, adverse events."
+    },
+    {
+      "id": "05_discussion",
+      "title": "Discussion",
+      "mode": "llm",
+      "kind": "body",
+      "word_target": 1200,
+      "depends_on": ["04_results"],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Interpret results in context of existing literature. Address limitations. State clinical implications."
+    },
+    {
+      "id": "06_references",
+      "title": "References",
+      "mode": "structured",
+      "kind": "back_matter",
+      "word_target": 0,
+      "depends_on": ["02_introduction", "03_methods", "04_results", "05_discussion"],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Compile cited literature using Vancouver numbered citation style."
+    }
+  ],
+  "quality": {
+    "pass_threshold": 85,
+    "max_refinement_iterations": 3,
+    "categories": [
+      "evidence_grounding",
+      "completeness",
+      "methodological_rigor"
+    ]
+  },
+  "compilation": {
+    "format": "docx",
+    "renderer": "bookshelf",
+    "preamble": [],
+    "postprocess": [
+      "cwyw_tags",
+      "figure_replacement"
+    ]
+  }
+}

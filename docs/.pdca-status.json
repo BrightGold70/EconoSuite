@@ -1,0 +1,13 @@
+{
+  "project": "EconoSuite",
+  "current_phase": "design",
+  "last_updated": "2026-04-01T15:00:00+09:00",
+  "phases": {
+    "plan": "completed",
+    "design": "pending",
+    "do": "pending",
+    "check": "pending",
+    "act": "pending"
+  },
+  "active_feature": "econosuite_master_plan.md"
+}

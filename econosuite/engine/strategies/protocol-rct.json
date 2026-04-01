@@ -1,0 +1,194 @@
+{
+  "document_type": "protocol-rct",
+  "display_name": "Randomized Controlled Trial Protocol",
+  "plugin": "ProtocolPlugin",
+  "sections": [
+    {
+      "id": "01_background",
+      "title": "Background and Rationale",
+      "mode": "llm",
+      "kind": "body",
+      "word_target": 900,
+      "depends_on": [],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Summarize disease context, comparator landscape, clinical equipoise, and the rationale for a randomized controlled design."
+    },
+    {
+      "id": "02_objectives",
+      "title": "Objectives",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 450,
+      "depends_on": [
+        "01_background"
+      ],
+      "quality_category": "endpoint_clarity",
+      "llm_prompt_hint": "State primary, secondary, and exploratory objectives aligned to the randomized comparison."
+    },
+    {
+      "id": "03_study_design",
+      "title": "Study Design",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 850,
+      "depends_on": [
+        "02_objectives"
+      ],
+      "quality_category": "regulatory_completeness",
+      "llm_prompt_hint": "Describe the phase, treatment arms, allocation ratio, treatment duration, visits, and overall trial schema."
+    },
+    {
+      "id": "04_eligibility",
+      "title": "Eligibility Criteria",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 500,
+      "depends_on": [
+        "03_study_design"
+      ],
+      "quality_category": "regulatory_completeness",
+      "llm_prompt_hint": "List inclusion and exclusion criteria that support safety, internal validity, and feasibility."
+    },
+    {
+      "id": "05_procedures",
+      "title": "Study Procedures",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 850,
+      "depends_on": [
+        "03_study_design",
+        "04_eligibility"
+      ],
+      "quality_category": "operational_feasibility",
+      "llm_prompt_hint": "Outline screening, treatment, assessments, dose modifications, concomitant care, follow-up, and visit windows."
+    },
+    {
+      "id": "06_endpoints",
+      "title": "Outcome Measures",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 600,
+      "depends_on": [
+        "02_objectives",
+        "05_procedures"
+      ],
+      "quality_category": "endpoint_clarity",
+      "llm_prompt_hint": "Define primary and secondary efficacy and safety endpoints, estimands, and assessment timing."
+    },
+    {
+      "id": "07_statistical",
+      "title": "Statistical Analysis Plan",
+      "mode": "llm",
+      "kind": "body",
+      "word_target": 1000,
+      "depends_on": [
+        "06_endpoints",
+        "11_randomization",
+        "13_interim"
+      ],
+      "quality_category": "analysis_rigor",
+      "llm_prompt_hint": "Specify analysis populations, hypothesis framework, sample size justification, primary analysis, sensitivity analyses, subgroup analyses, and missing data handling."
+    },
+    {
+      "id": "08_ethics",
+      "title": "Ethical Considerations",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 400,
+      "depends_on": [
+        "03_study_design",
+        "04_eligibility"
+      ],
+      "quality_category": "regulatory_completeness",
+      "llm_prompt_hint": "Cover informed consent, risk-benefit assessment, subject confidentiality, safety oversight, and protocol deviations."
+    },
+    {
+      "id": "09_data_mgmt",
+      "title": "Data Management",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 450,
+      "depends_on": [
+        "05_procedures",
+        "08_ethics"
+      ],
+      "quality_category": "operational_feasibility",
+      "llm_prompt_hint": "Describe EDC capture, monitoring, source data verification, audit trail, query management, and archival."
+    },
+    {
+      "id": "10_references",
+      "title": "References",
+      "mode": "structured",
+      "kind": "back_matter",
+      "word_target": 0,
+      "depends_on": [
+        "01_background",
+        "07_statistical",
+        "08_ethics"
+      ],
+      "quality_category": "evidence_grounding",
+      "llm_prompt_hint": "Compile cited literature, standards, and trial methodology references."
+    },
+    {
+      "id": "11_randomization",
+      "title": "Randomization and Allocation Concealment",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 500,
+      "depends_on": [
+        "03_study_design",
+        "04_eligibility"
+      ],
+      "quality_category": "regulatory_completeness",
+      "llm_prompt_hint": "Describe sequence generation, stratification factors, allocation concealment, implementation responsibilities, and emergency unmasking dependencies."
+    },
+    {
+      "id": "12_blinding",
+      "title": "Blinding Procedures",
+      "mode": "structured",
+      "kind": "body",
+      "word_target": 350,
+      "depends_on": [
+        "11_randomization"
+      ],
+      "quality_category": "operational_feasibility",
+      "llm_prompt_hint": "Describe who is blinded, how masking is maintained, allowed unblinding scenarios, and bias mitigation if open-label."
+    },
+    {
+      "id": "13_interim",
+      "title": "Interim Analysis",
+      "mode": "hybrid",
+      "kind": "body",
+      "word_target": 450,
+      "depends_on": [
+        "06_endpoints",
+        "11_randomization"
+      ],
+      "quality_category": "analysis_rigor",
+      "llm_prompt_hint": "Define interim timing, alpha-spending or decision boundaries, data monitoring review, and stopping rules for efficacy, futility, and safety."
+    }
+  ],
+  "quality": {
+    "pass_threshold": 85,
+    "max_refinement_iterations": 3,
+    "categories": [
+      "regulatory_completeness",
+      "evidence_grounding",
+      "endpoint_clarity",
+      "operational_feasibility",
+      "analysis_rigor"
+    ]
+  },
+  "compilation": {
+    "format": "docx",
+    "renderer": "bookshelf",
+    "preamble": [
+      "title_page",
+      "synopsis_table"
+    ],
+    "postprocess": [
+      "cwyw_tags",
+      "figure_replacement"
+    ]
+  }
+}
