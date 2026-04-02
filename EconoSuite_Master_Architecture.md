@@ -29,12 +29,18 @@ EconoSuite formalizes the economic approach *before* any data is touched. Throug
 
 ---
 
-## 2. The Unified Engine: High-Fidelity Text Generation
+## 2. The Unified Engine: Comprehensive Submission Pathways
 
-The text generation process in EconoSuite is far more rigorous than standard prompt-completion. It utilizes a **Unified Engine** (a complete refactoring and merging of the legacy Protocol and Manuscript Triad Orchestrators) built upon a high-fidelity Retrieval-Augmented Generation (RAG) architecture.
+The text generation process in EconoSuite is far more rigorous than standard prompt-completion. It utilizes a **Unified Engine** built upon a high-fidelity Retrieval-Augmented Generation (RAG) architecture. At initialization, the user explicitly declares the manuscript's underlying methodology and formal submission category. This categorizes the graph execution into a **Five-Tier Pipeline Architecture**:
+
+1.  **The Empirical (Data-Driven) Pipeline**: The flagship EconoSuite pathway for *Original Research*. Expects distinct tabular data. Triggers the ESA Engine (Data Profiler, Method Heuristic), generates Stata Repliation Packages, and distinguishes implicitly between Structural vs. Reduced-Form models depending on the title intent.
+2.  **The Pure Theoretical Pipeline**: Handles *Theoretical Papers* and *Methodological / Econometric Papers*. Entirely bypasses Data Profiling and Stata. Instead, tightly couples the RAG engine directly to the `LaTeXMathCompiler` to continuously validate and render pure economic theory, proofs, and internal consistency checks using EconoSyntax without waiting for dataset parameters.
+3.  **The Comprehensive Review Pipeline**: Designed for *Review Articles, Essays, Book Reviews, Editorials*, and *Interviews*. Maximizes Semantic Scholar API timeouts for exhaustive literature digestion and critical evaluation. Retains the capability to generate PRISMA Flow Diagrams for rigid scoping submissions.
+4.  **The Short Communications Pipeline**: Tailored for *Notes, Miscellanea, and Replies*. Truncates the Keith Head introduction constraints and strips vast literature digests in favor of ultra-concise, single-innovation reporting frameworks.
+5.  **The Proposal / Protocol Pipeline**: Exclusively tailored for domestic funding. Suppresses all LaTeX compilation. The RAG outputs are mandated to be drafted entirely in **Korean language** to align with domestic standards. The generated Korean text blocks are securely mapped into the **HWPX/OWPML Protocol Generator** to compile into formatting-strict Korean government templates (e.g., NRF or KDI grant `.hwpx` files).
 
 ### 2.1 Cross-Section Consistency & Auditing
-Economic manuscripts require absolute mathematical and narrative synchronization between the theory, the identification strategy, and the empirical results. The Unified Engine achieves this through:
+Economic manuscripts require absolute mathematical and narrative synchronization between the theory, the identification strategy, and the empirical results. The Unified Engine achieves this natively across all pipelines through:
 *   **Constitutional Validation**: Before any drafted section is finalized, an autonomous critic agent audits the text against the original hypotheses and theoretical models. The engine strictly avoids the "history of the trial-and-error process," ensuring the text is a precisely engineered argument.
 *   **Statistical Auditing**: The text generator dynamically reads the output artifacts from the ESA Engine. It injects valid coefficients directly into the text, neutralizing hallucinated values.
 *   **Concrete vs. Abstract Lexicon**: Based on NLP reviews of desk-rejected AER papers, the engine forces "concrete and descriptive" terminology, actively scoring and rejecting overly abstract linguistic framing.
@@ -61,15 +67,50 @@ EconoSuite integrates specialized data ingestion APIs to ensure the research is 
 
 ## 4. The ESA (Economic-Statistic-Analysis) Engine
 
-The analytical core of EconoSuite bypasses traditional biostatistics in favor of rigorous, causal inference methodologies.
+The analytical core of EconoSuite bypasses traditional biostatistics in favor of rigorous, modern theoretical econometrics capable of executing and diagnosing modern empirical designs. 
 
-### Core Causal Inference Capabilities
-The engine natively selects, processes, and validates:
-*   **Instrumental Variables (IV / 2SLS)**: Validating relevance and exogeneity assumptions.
-*   **Difference-in-Differences (DiD)**: Executing parallel trends testing and dynamic treatment effect plotting.
-*   **Regression Discontinuity Design (RDD)**: McCrary density sorting and bandwidth optimization.
-*   **Synthetic Control Methods (SCM)**: Placebo testing in space and time.
-*   **Heckman Selection Models**: Controlling for non-random sample selection.
+### Data Ingestion & Profiling Protocol
+Because EconoSuite autonomously dictates the statistical pipeline, it mandates a strict, machine-readable data input sequence before any econometrics invoke:
+1.  **The Dual Supply Mandate**: The user must supply two assets:
+    *   The Raw Data Matrix: Provided in `.csv` or standard Stata `.dta` formats.
+    *   The `ResearchSchema.yaml`: A metadata file exclusively outlining the "Working Title" (for intent parsing) and explicitly designating the column string for the Dependent ($Y$) variable.
+2.  **Autonomous Matrix Profiler (Pre-Flight Phase)**: EconoSuite loads the data matrix using pandas/NumPy to scan the specific $Y$ array.
+    *   If $Y \in \{0, 1\}$, it tags the data as Binary.
+    *   If $Y \ge 0$ with mass accumulation at $0$ (or boundary limits), it tags the data as Censored.
+    *   It runs initial Shapiro-Wilk and Breusch-Pagan testing to verify homoskedastic parameters prior to the heuristic engine.
+
+### Automated Method Selection Heuristic
+To operate autonomously, the ESA Engine initiates every analysis by applying a strict heuristic to the dataset and research title to map out the theoretical Data Generation Process (DGP) before running models:
+1.  **Selection by Dependent Variable (Data Type):**
+    *   *Continuous Data*: Routes to standard parametric linear models (Ordinary Least Squares - OLS).
+    *   *Discrete/Binary Data* (e.g., Voting, Brand Choice): Routes to Limited Dependent Variable Models (Probit, Logit, Maximum Score Estimators).
+    *   *Censored Data* (e.g., Capped expenditure thresholds): Routes to Censored Regression Models.
+    *   *Duration/Time-to-Event Data* (e.g., Employment lags): Routes to Hazard Models (Cox proportional hazards, Weibull duration models).
+    *   *Endogenously Selected Data* (e.g., Self-selected samples): Routes to Endogenous Sample Selection Models (Heckman).
+2.  **Selection by Topic Title (Research Intent):**
+    *   *Impact / Effect*: Titles suggesting causal relationships compel the system to prioritize exogeneity handlers (Instrumental Variables - IV) over simple descriptive correlation to control for "wrong-way" causality.
+    *   *Policy / Forecasting*: Titles implying policy scenario prediction trigger Structural Modeling invariants rather than historical regression.
+    *   *Topic-Specific Overrides*: Specific keywords trigger rigid mathematical paths (e.g., "Willingness-to-Pay" forces binary response contingent valuation architectures).
+3.  **DGP Diagnostics (The Assumption Check):**
+    *   The engine tests distribution assumptions. If errors are non-normal or heteroskedastic, it autonomously shifts away from parametric methods toward robust, nonparametric estimation (kernels, sieves).
+    *   If endogeneity or unobserved heterogeneity is detected, the engine mandates structural heterogeneity parameters or robust control strategies.
+
+### Core Econometric Methodologies
+The heuristic directly triggers computation across four major pillars:
+1.  **Causal Inference & Treatment Effects**:
+    *   *Handlers*: Randomized Controlled Trials (RCTs), Instrumental Variables (IV / 2SLS), Difference-in-Differences (DiD), Regression Discontinuity Design (RDD), Regression Kink Design, and Synthetic Controls.
+    *   *Estimators*: Functionality explicitly targets the Average Treatment Effect (ATE), Average Treatment Effect on the Treated (ATT), Local Average Treatment Effect (LATE), Marginal Treatment Effects (MTE), and Quantile (QTE).
+2.  **Parametric & Extremum Estimators**:
+    *   *Linear*: OLS and Panel Data Fixed Effects (de-meaning to isolate time-invariant unobserved heterogeneity).
+    *   *Non-Linear/Moment based*: Maximum Likelihood Estimation (MLE & QML) and Generalized Method of Moments (GMM).
+3.  **Robust, Nonparametric, & Semiparametric Methods**:
+    *   *Flexible Distributions*: Nonparametric kernel and nearest-neighbor weights.
+    *   *Sieves*: Functional approximation utilizing splines (piecewise polynomials), wavelets, and neural networks.
+    *   *Standard Errors*: Immediate fallback to Heteroskedasticity-Consistent (HC) Standard Errors.
+4.  **Simulation & Resampling**:
+    *   *Compute-Intensive*: Indirect Inference, Method of Simulated Moments (MSM).
+    *   *Monte Carlo*: MCMC frameworks and Metropolis-Hastings (MH) samplers for computationally intractable distributions.
+    *   *Resampling*: Bootstrap handlers for finite-sample distribution variance correction.
 
 ### Reproducibility & Code Generation
 *   **Stata Script Auto-generation**: The engine automatically translates Python DataFrames and model logic into highly commented, executable Stata `.do` scripts.
@@ -115,38 +156,50 @@ Generating syntactically perfect LaTeX in a high-throughput, non-interactive env
 
 | EconoSyntax Input | Output LaTeX Rendering Objective | Econometric Context |
 | :--- | :--- | :--- |
-| **1. Expectations & Probabilities** |
-| `E[Y | X]` | `\mathbb{E}[Y \mid X]` | Conditional Expectation (Blackboard bold). |
-| `Var(X | Z)` | `\text{Var}(X \mid Z)` | Conditional Variance. |
-| `Cov(X, Y)` | `\text{Cov}(X, Y)` | Covariance Operator. |
-| `Pr(Y=1 | X)` | `\Pr(Y = 1 \mid X)` | Conditional Probability (Logit/Probit). |
-| **2. Asymptotics & Limits** |
-| `plim(X_n)` | `\text{plim}_{n \to \infty} X_n` | Probability limit. |
-| `converge_d` | `\xrightarrow{d}` | Convergence in distribution. |
+| **1. Expectations & Probabilities** | | |
+| `E[X]` | `E(X)` | Mathematical Expectation. |
+| `Var(X)` | `\text{var}(X)` | Variance (enforced lowercase text). |
+| `Cov(X,Y)` | `\text{cov}(X, Y)` | Covariance. |
+| `Corr(X,Y)` | `\text{corr}(X, Y)` | Correlation. |
+| `dist_as` | `\sim` | "Is distributed as". |
+| `pdf_norm` | `\phi` | Standard normal pdf. |
+| `cdf_norm` | `\Phi` | Standard normal cdf. |
+| `chi_sq` | `\chi^2` | Chi-squared distribution. |
+| **2. Asymptotics & Limits** | | |
+| `plim(X)` | `\text{plim} X_n` | Probability limit. |
 | `converge_p` | `\xrightarrow{p}` | Convergence in probability. |
-| `normal_dist(mu, sigma^2)` | `\mathcal{N}(\mu, \sigma^2)` | Normal Distribution (Calligraphic math font). |
-| **3. Linear Models & Causality** |
-| `OLS(Y, X)` | `Y_{it} = \alpha + \boldsymbol{X}_{it}'\boldsymbol{\beta} + \epsilon_{it}` | Multivariate OLS (Bold vectors, proper transpose). |
-| `DiD(Y, D, Post)` | `Y_{it} = \alpha + \beta_1 D_i + \beta_2 \text{Post}_t + \beta_3 (D_i \times \text{Post}_t) + \epsilon_{it}` | Difference-in-Differences. |
-| `IV_1(X, Z)` | `X_{it} = \pi_0 + \boldsymbol{Z}_{it}'\boldsymbol{\pi} + \nu_{it}` | First stage IV/2SLS. |
-| `IV_2(Y, X_hat)` | `Y_{it} = \alpha + \beta \hat{X}_{it} + \epsilon_{it}` | Second stage IV/2SLS. |
-| `RDD_sharp(Y, X, c)` | `Y_i = \alpha + \tau \mathbb{1}\{X_i \ge c\} + f(X_i - c) + \epsilon_i` | Sharp Regression Discontinuity (Indicator function). |
-| **4. Panel Data & Fixed Effects** |
-| `FE_twoway(Y, X)` | `Y_{it} = \boldsymbol{X}_{it}'\boldsymbol{\beta} + \mu_i + \gamma_t + \epsilon_{it}` | Two-way Fixed Effects (Individual & Time). |
-| `RE_error(u)` | `u_{it} = \mu_i + \nu_{it}` | Random Effects error decomposition. |
-| **5. Advanced Estimators (MLE / GMM)** |
+| `converge_d` | `\xrightarrow{d}` | Convergence in distribution. |
+| `big_Op(X)` | `O_p(X)` | Probabilistic order (bounded in probability). |
+| `small_op(X)` | `o_p(X)` | Probabilistic order (converges to 0). |
+| **3. Linear Models & Testing** | | |
+| `OLS(y, X)` | `y = \boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}` | Linear Regression (Bold matrix/vectors). |
+| `Hypothesis(R, beta, c)` | `\boldsymbol{R}'\boldsymbol{\beta} = \boldsymbol{c}` | Linear restrictions testing. |
+| `indicator(K)` | `1_K` | Indicator function for condition K. |
+| **4. Advanced Estimators (MLE / GMM)** | | |
 | `MLE_obj(theta)` | `\hat{\boldsymbol{\theta}}_{MLE} = \arg\max_{\boldsymbol{\theta}} \sum_{i=1}^n \log L(\boldsymbol{\theta} \mid y_i, \boldsymbol{x}_i)` | Maximum Likelihood Objective. |
 | `GMM_obj(theta)` | `\hat{\boldsymbol{\theta}}_{GMM} = \arg\min_{\boldsymbol{\theta}} \left[ \frac{1}{n} \sum_{i=1}^n \boldsymbol{g}(y_i, \boldsymbol{x}_i, \boldsymbol{\theta}) \right]' \boldsymbol{W} \left[ \frac{1}{n} \sum_{i=1}^n \boldsymbol{g}(y_i, \boldsymbol{x}_i, \boldsymbol{\theta}) \right]` | Generalized Method of Moments. |
-| **6. Matrix Algebra (Econometrica Style)** |
-| `matrix_inv(X'X)` | `(\boldsymbol{X}'\boldsymbol{X})^{-1}` | OLS projection matrix inverse. |
-| `trace(A)` | `\text{tr}(\boldsymbol{A})` | Trace of a matrix. |
+| **5. Matrix Algebra (Econometrica Style)** | | |
+| `matrix(A)'` | `\boldsymbol{A}'` or `\boldsymbol{A}^0` | Transpose (strictly prevents $A^T$). |
+| `matrix_inv(A)` | `\boldsymbol{A}^{-1}` | Standard inverse. |
+| `matrix_pinv(A)` | `\boldsymbol{A}^{+}` | Moore-Penrose generalized inverse. |
+| `det(A)` | `\lvert\boldsymbol{A}\rvert` or `\det \boldsymbol{A}` | Determinant. |
+| `trace(A)` | `\text{tr}(\boldsymbol{A})` | Trace (and `\text{etr}` for exponential trace). |
 | `rank(A)` | `\text{rk}(\boldsymbol{A})` | Rank of a matrix. |
-| `kronecker(A, B)` | `\boldsymbol{A} \otimes \boldsymbol{B}` | Kronecker product. |
+| `kronecker(A,B)` | `\boldsymbol{A} \otimes \boldsymbol{B}` | Kronecker product. |
+| `hadamard(A,B)` | `\boldsymbol{A} \odot \boldsymbol{B}` | Hadamard product. |
+| **6. Time Series & Calculus** | | |
+| `lag(x)` | `L x_t` or `B x_t` | Backward shift/lag operator. |
+| `diff(x)` | `\Delta x_t` | Difference operator. |
+| `diff_d(x)` | `\text{d}x` | Roman 'd' for differentials. |
+| `partial(x)` | `\partial x` or `\text{D}x` | Partial derivative. |
+| `grad(f)` | `\nabla f` | Gradient (transpose of derivative). |
+| `hessian(f)` | `\boldsymbol{H}` | Hessian matrix. |
 
 Economic mathematical notation strictness is enforced globally within these pipelines to signal "submission-ready" rigor:
-*   **Basic Notation**: Italicized scalars; boldface vectors and matrices. Sets use script fonts, while number sets ($\mathbb{R}$, $\mathbb{Z}$, $\mathbb{N}$) use Blackboard bold font. Subscripts/superscripts are capped at 2 levels.
-*   **Fractions**: Forces solidus ($x/y$) for inline fractions and reserves `\frac{}` for displayed equations.
-*   **Advanced Matrix Operators**: Strict enforcement of Econometrica conventions: Transpose uses $A'$ or $A^0$ (never $A^T$), Trace uses $tr(A)$, Rank uses $rk(A)$, Kronecker uses $A \otimes B$. Distinguishes strictly between null vector ($0$) and null matrix ($O$).
+*   **Basic Notation**: Scalar variables must be italicized. Vectors and matrices **must be designated in boldface** (lowercase bold-italic for vectors, uppercase for matrices). Sets use script fonts, while number systems ($\mathbb{R}, \mathbb{Z}, \mathbb{N}$) natively use Blackboard bold.
+*   **Null Entities**: Enforces the distinct usage of the bold null vector ($\mathbf{0}$) versus the uppercase null matrix ($\mathbf{O}$).
+*   **Fractions & Exponentials**: Forces solidus ($X/Y$) for inline fractions and reserves `\frac{}` for displayed equations. Power of $e$ strictly converts to `\exp(\cdot)`.
+*   **Mathematical Relations**: Natively formats identity (`\equiv`), defines as (`:=`), implies (`\implies`), and asymptotic equivalence (`\sim`).
 
 ### 5. Korean Government Protocol Engine (HWPX/OWPML)
 Domestic Korean funding agencies (NRF, KDI, BOK) exclusively mandate grant protocols structured in `.hwp` and `.hwpx` templates (e.g., `신진연구자지원사업` - Early Career Researcher Support Program). To automate these domestic pipelines, EconoSuite shifts away from LaTeX into an autonomous XML injection framework.
@@ -179,22 +232,35 @@ Domestic Korean funding agencies (NRF, KDI, BOK) exclusively mandate grant proto
 
 EconoSuite is fundamentally powered by the **Antigravity Daemon**, which operates as the persistent, background orchestrator driving the entire 10-phase pipeline autonomously.
 
-### Continuous Pipeline Execution
-*   **State Management & Resilience**: The daemon continuously monitors the DAG execution state. If an econometric falsification test fails or an API times out (e.g., Semantic Scholar throttling), the daemon autonomously triggers fallback mechanisms, adjusting parameters or re-routing logic without manual user intervention.
+### Continuous Pipeline Execution & Re-Unification Engine
+Drawing directly from the completed orchestration architecture, the EconoSuite Unified Engine absorbs all entry points through a singular **Run Adapter**.
+*   **State Management & Resilience (Phase-level Checkpointing)**: The daemon continuously monitors the DAG execution state, strictly saving progress to a local state JSON file after every phase. If a deep API call times out (e.g., Semantic Scholar throttling) or compilation crashes, the daemon autonomously resumes the exact pipeline phase without redundant recalculations. 
 *   **Persistent Context & Memory**: The daemon maintains a rolling, persistent context of the manuscript's progression. It cross-references current drafts against the initial "Ideation & Hypothesis" constraints, ensuring the final text strictly adheres to the original Identification Strategy.
-*   **Tool & MCP Coordination**: The daemon acts as the central nervous system connecting Python execution environments (ESA Engine, `LaTeXMathCompiler`) with external Model Context Protocol (MCP) servers seamlessly.
+*   **Strict No-Fallback Mode**: Silent degradation is permanently banned. If constitutional validation fails or an ESA econometric check throws a mismatch, the engine will halt execution and alert the Debugger Agent rather than inserting a generic "Placeholder." This ensures the integrity of the economic argument.
+*   **Tool & MCP Coordination**: The daemon acts as the central nervous system connecting Python execution environments (ESA Engine, `LaTeXMathCompiler`, LLM Resolvers) with external Model Context Protocol (MCP) servers seamlessly.
+*   **Exclusive Daemon Routing**: Direct, interactive terminal executions are strictly disabled. When operating via CLI, the workflow *must always* route through the isolated Antigravity daemon wrapper. The only explicit exceptions to this background-daemon requirement are when the user is operating within the visual **Tauri Desktop App** or the **Streamlit** web interface.
+    *   **Headless STDIN Isolation**: To prevent pipeline hanging when executed automatically, the daemon explicitly routes `STDIN` to `/dev/null`, preventing third-party packages from requesting interactive confirmations.
+    *   **Context-Aware Machine Output**: Standard output is stripped of verbose human-readable ASCII art and logs. By utilizing concise JSON-log outputs, it preserves the running LLM Agent's token context window.
+*   **Agent Delegation & IPC (Inter-Process Communication)**: To prevent race conditions in parallel DAG execution and avoid file-watcher conflicts with external handlers, EconoSuite adopts advanced daemon isolation:
+    *   **Scoped Directory Auto-Detection**: The engine autonomously detects and routes communications to project-scoped agent directories (e.g., `ECONOSUITE_AGENT_DIR`), ensuring that simultaneous runs do not experience nonce mismatches or stale handshake files.
+    *   **Unix Socket IPC (High Priority Migration)**: The target core architecture explicitly mandates a transition from legacy file-based LLM delegation (prompt/response text files) to robust Unix socket IPC. This upgrade fundamentally eliminates file deletion timing issues and properly enables true concurrent DAG node processing in agent mode.
 
 ---
 
 ## 7. Multi-Agent Integration & Deep Research
 
 > [!TIP]
-> **NotebookLM MCP / Intelligent Synthesis**
+> **NotebookLM MCP / Intelligent Synthesis & Connectivity Hardening**
 > EconoSuite utilizes the `jacob-bd/notebooklm-mcp-cli` for advanced synthesis. By uploading hundreds of working papers and utilizing deep research capabilities alongside the orchestrator, the AI agents can accurately spot identification strategy flaws, literature gaps, and suggest robustness checks based on the latest NBER publications. 
+> 
+> **CRITICAL ARCHITECTURE REQUIREMENT**: NLM is a hard dependency within EconoSuite—if NLM context is unavailable, the workflow must abort rather than silently degrading to fallback searches. To sustain long-running MCP connections during these deep-dive research queries, EconoSuite strictly enforces an **NLM Connectivity Hardening Stack**:
+> * **Provider / CLI Buffer**: Extended localized timeouts (CLI: 120s, MCP Provider: 30s) and exponential backoff retry states.
+> * **Daemon Stack Buffer**: The central orchestration daemon forcibly injects `NOTEBOOKLM_QUERY_TIMEOUT=600` into agent subprocess environments and extends its internal subprocess polling timeout by an additional 600 seconds, guaranteeing that the MCP component processes deep literature scans without premature term signals.
 
 ---
 
 ## 8. Document Architecture & Output Handlers
 
-*   **Native HWPX Support (Hancom OWPML)**: Aside from standard `.tex` and `.pdf` packages, EconoSuite bridges the domestic-international gap by natively supporting `.hwpx` outputs through Hancom OWPML models. This ensures seamless submissions to Korean policy institutes (e.g., KDI, BOK) and domestic journals without formatting loss.
+*   **Global Output Directory**: To prevent repository pollution, EconoSuite strictly saves all generated assets (LaTeX manuscripts, compiled PDFs, Stata replication packages, Makefiles, data extracts, and PRISMA diagrams) outside the active repository. All outputs are explicitly routed to `~/EconoSuite_Outputs/[topic_or_project_name]`.
+*   **Native HWPX Support (Hancom OWPML)**: Aside from standard `.tex` and `.pdf` packages, EconoSuite bridges the domestic-international gap by natively supporting `.hwpx` outputs through Hancom OWPML models. This ensures seamless submissions to Korean policy institutes (e.g., KDI, BOK) and domestic journals without formatting loss. All compiled HWPX protocols are pushed to the global output directory.
 *   **Citation Database Reliability**: The `EndNoteWriter` manages structural integrity, eliminating schema corruption in `.Data` folders during the aggressive citation mapping required for empirical literature reviews.
