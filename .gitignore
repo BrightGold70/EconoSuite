@@ -21,6 +21,14 @@ test_generic/
 # Google Gemini / Antigravity Agent ecosystem
 # If you want to keep skills in source control, uncomment `.gemini/skills/`
 # .gemini/
+.gemini/audit/
+.gemini/policies/
+
+# bkit local tool state
+.bkit/
+
+# oh-my-claudecode local state
+.omc/
 
 # NotebookLM generated auth/session files if any
 *.session
