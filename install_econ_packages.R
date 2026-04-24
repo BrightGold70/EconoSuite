@@ -73,11 +73,16 @@ machine_learning <- c(
   "shapviz"       # SHAP values for Explainable AI (interpreting ML models)
 )
 
-# 8. Data Fetching APIs (World Bank, FRED, Stocks, WTO)
+# 8. Data Fetching APIs (World Bank, OECD, IMF, FRED, WTO)
 data_fetching <- c(
   "WDI",          # World Development Indicators (World Bank)
-  "quantmod",     # Financial modeling and trading framework
+  "OECD",         # Official OECD data API
+  "imfr",         # International Monetary Fund (IMF) API
+  "eurostat",     # European Union statistical office API
   "fredr",        # Federal Reserve Economic Data (FRED) API
+  "rdbnomics",    # DBnomics super-API (aggregates 85+ global databases)
+  "quantmod",     # Financial modeling and trading framework
+  "rvest",        # HTML Web scraping for government statistical tables
   "httr2",        # Modern HTTP client (essential for querying the WTO API)
   "jsonlite",     # JSON parser (essential for handling API responses)
   "remotes"       # Needed to install non-CRAN packages from GitHub (e.g., wtor)

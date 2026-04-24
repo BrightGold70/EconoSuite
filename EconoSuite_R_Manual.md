@@ -46,10 +46,14 @@ source("install_econ_packages.R")
 *   **`MCMCpack`**: Contains frameworks for Markov Chain Monte Carlo (MCMC) and Metropolis-Hastings (MH) samplers for computationally intensive Bayesian simulation.
 
 ### E. Data Fetching & Web APIs
+*   **`rdbnomics`**: The ultimate "super-API" for macroeconomics. It aggregates 85+ databases including the ECB, BIS, Eurostat, IMF, OECD, and World Bank into a single, unified interface.
 *   **`WDI`**: Directly downloads data from the World Bank's World Development Indicators into your R environment.
+*   **`OECD`**: Official API wrapper to extract data from the Organisation for Economic Co-operation and Development.
+*   **`imfr`**: Explores and downloads datasets from the International Monetary Fund.
+*   **`eurostat`**: Direct access to the European Union's statistical office data.
 *   **`fredr`**: API client for Federal Reserve Economic Data (FRED), perfect for fetching macroeconomic series.
 *   **`quantmod`**: Quantitative Financial Modeling framework. Great for downloading daily stock prices, FX rates, and other financial data via Yahoo/Google Finance.
-*   **`httr2` & `jsonlite`**: Essential tools for custom APIs. Because the **World Trade Organization (WTO)** does not have an official package on CRAN, you must use these to query the [WTO API](https://apiportal.wto.org) directly. 
+*   **`rvest` & `httr2`**: The core tools for scraping data from custom government websites that lack a dedicated API. (`httr2` and `jsonlite` are also essential for querying the [WTO API](https://apiportal.wto.org) directly).
     *   *(Warning: The CRAN package named `wTO` is for genetics, not trade! If you want a dedicated WTO package, you can use the unofficial `wtor` package. You can install it over the internet using `remotes::install_github("fabiansalazares/wtor")`, or install it offline using the backup source file provided in the `data/statistics` folder.)*
 
 ### F. International Trade & Multi-Nation Economics
