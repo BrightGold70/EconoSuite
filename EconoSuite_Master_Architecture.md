@@ -64,6 +64,10 @@ EconoSuite integrates specialized data ingestion APIs to ensure the research is 
     *   **Semantic Scholar Graph API**: For deep citation networks and influential paper tracking.
     *   **RePEc (Research Papers in Economics)**: The definitive repository for economics working papers.
     *   **NBER Working Papers Indexer**: Continuous scraping of National Bureau of Economic Research publications to ensure state-of-the-art methodology adherence.
+*   **Local LightRAG Architecture (Offline Engine)**:
+    *   To ensure strict compliance with mathematical syntaxes and editorial constraints without internet dependency, EconoSuite deploys a local **LightRAG** (Graph-Enhanced Retrieval-Augmented Generation) system.
+    *   **Guideline Index (`data/guideline/`)**: Indexes the Cochrane, McCloskey, Keith Head, and WTO structural constraints. The drafting agent queries this graph to validate tone, structure, and terminology during the writing phase.
+    *   **Statistical Manual Index (`data/statistics/`)**: Indexes the dense PDF manuals of R packages (e.g., `MCMCpack`, `np`, `did`). The ESA Engine queries this database to extract exact, hallucination-free code parameters and default assumptions during script generation.
 *   **Intelligent JEL Classification**:
     *   The specialized `JELClassifier.py` autonomously parses abstract content and assigns highly precise Journal of Economic Literature (JEL) indexing codes. EconoSuite enforces the inclusion of at least three relevant codes (e.g., C: Quantitative Methods, D: Microeconomics) to map into the granular subfields required by top journals.
 
