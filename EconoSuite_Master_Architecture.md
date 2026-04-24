@@ -135,6 +135,12 @@ The heuristic directly triggers computation across four major pillars:
     3.  Writes comprehensive `README` documentation (including software versions like Stata 17+, R 4.2+).
     4.  Outputs proprietary datasets in dual formats (e.g., `.dta` and `.csv`/ASCII).
 
+### The ESA-to-Manuscript Bridge (The Anti-Hallucination Protocol)
+To prevent the LLM from hallucinating standard errors, dropping decimals, or faking significance asterisks, EconoSuite completely decouples statistical execution from text generation through a rigid 3-step bridge:
+1.  **The JSON Export Mandate**: R and Stata scripts are banned from outputting raw console text (e.g., `summary(model)`). Instead, scripts must utilize packages like `broom::tidy()` to extract coefficients, t-statistics, and p-values, exporting them into a strictly formatted, machine-readable `results.json` state file.
+2.  **Deterministic Table Compilation**: The LLM is structurally banned from writing LaTeX tables. Instead, a deterministic Python script (`TableCompiler.py`) reads `results.json` and autonomously generates the `\begin{table}` matrix using `booktabs`, guaranteeing perfect alignment and exact numerical transcription.
+3.  **The Statistical Auditor (Critic Agent)**: When the LLM drafts the "Empirical Results" narrative, it relies on the JSON state file. Before the text is committed to the manuscript, a Critic Agent runs a differential regex scan—cross-referencing every number written in the LLM's text against the `results.json` array. Any mismatch (e.g., writing "0.45" when the JSON states "0.42") triggers a fatal error and forces an immediate redraft.
+
 ### Robustness Checks & Falsification
 The orchestrator enforces strict falsification testing categorized by a standard taxonomy: Sub-sample Splits, Alternative Specifications, Moment Selection, Functional Forms, and Out-of-sample Testing.
 *   **Linguistic Precision**: When drafting robustness results, the Unified Engine physically prevents vagueness. Phrases like *"the results are qualitatively the same"* are flagged; the generator must explicitly state which features (sign and relative magnitude) remained constant.
