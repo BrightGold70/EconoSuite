@@ -98,26 +98,28 @@ To operate autonomously, the ESA Engine initiates every analysis by applying a s
 ### Core Econometric Methodologies
 The heuristic directly triggers computation across four major pillars:
 1.  **Causal Inference & Treatment Effects**:
-    *   *Handlers*: Randomized Controlled Trials (RCTs), Instrumental Variables (IV / 2SLS), Difference-in-Differences (DiD), Regression Discontinuity Design (RDD), Regression Kink Design, and Synthetic Controls.
+    *   *Handlers*: Randomized Controlled Trials (RCTs), Instrumental Variables (`AER::ivreg`), Difference-in-Differences (`did`, `bacondecomp`), Regression Discontinuity Design (`rdrobust`), Regression Kink Design, and Synthetic Controls (`Synth`).
     *   *Estimators*: Functionality explicitly targets the Average Treatment Effect (ATE), Average Treatment Effect on the Treated (ATT), Local Average Treatment Effect (LATE), Marginal Treatment Effects (MTE), and Quantile (QTE).
 2.  **Parametric & Extremum Estimators**:
-    *   *Linear*: OLS and Panel Data Fixed Effects (de-meaning to isolate time-invariant unobserved heterogeneity).
-    *   *Non-Linear/Moment based*: Maximum Likelihood Estimation (MLE & QML) and Generalized Method of Moments (GMM).
-3.  **Robust, Nonparametric, & Semiparametric Methods**:
-    *   *Flexible Distributions*: Nonparametric kernel and nearest-neighbor weights.
-    *   *Sieves*: Functional approximation utilizing splines (piecewise polynomials), wavelets, and neural networks.
-    *   *Standard Errors*: Immediate fallback to Heteroskedasticity-Consistent (HC) Standard Errors.
+    *   *Linear*: OLS and Panel Data Fixed Effects via high-performance engines (`fixest`, `plm`).
+    *   *Non-Linear/Moment based*: Maximum Likelihood Estimation (MLE & QML), Generalized Method of Moments (`gmm`), and Discrete Choice modeling (`mlogit`). Marginal effects are strictly translated via `marginaleffects`.
+3.  **Robust, Machine Learning, & Nonparametric Methods**:
+    *   *Machine Learning & XAI*: High-dimensional variable selection and forecasting via Lasso/Elastic-Net (`glmnet`) and Gradient Boosting (`xgboost`). All ML models are strictly interpreted via Explainable AI (`shapviz`) to satisfy journal transparency requirements.
+    *   *Causal Forests*: Heterogeneous treatment effect discovery via Generalized Random Forests (`grf`).
+    *   *Standard Errors*: Immediate fallback to Heteroskedasticity-Consistent (HC) and cluster-robust Standard Errors (`sandwich`, `lmtest`).
 4.  **Simulation & Resampling**:
     *   *Compute-Intensive*: Indirect Inference, Method of Simulated Moments (MSM).
     *   *Monte Carlo*: MCMC frameworks and Metropolis-Hastings (MH) samplers for computationally intractable distributions.
     *   *Resampling*: Bootstrap handlers for finite-sample distribution variance correction.
 
 ### Reproducibility & Code Generation
-*   **Stata Script Auto-generation**: The engine automatically translates Python DataFrames and model logic into highly commented, executable Stata `.do` scripts.
+*   **Dual-Language Script Auto-generation**: The engine automatically translates Python DataFrames and model logic into highly commented, executable scripts in both **R** and **Stata**.
+    *   **R (Primary Analytical Engine)**: Used to execute the cutting-edge empirical methodologies (e.g., Staggered DiD, Machine Learning, Causal Forests) utilizing the pre-configured `EconoSuite` R environment.
+    *   **Stata (Verification & Submission Engine)**: Stata `.do` scripts are generated simultaneously. This serves a dual purpose: providing an independent algorithmic robustness check (cross-verifying core OLS/IV/FE results against R) and fulfilling strict journal data submission mandates where Stata remains the institutional standard for replication files.
 *   **Replication Package Mandate**: EconoSuite natively complies with the strict AEA/RES Data and Code Availability Policy. For every simulation or empirical run, the orchestrator:
-    1.  Generates a master `makefile`.
-    2.  Hardcodes the pseudo-random generator `seed` for Monte Carlos.
-    3.  Writes comprehensive `README` documentation (including software versions like Stata 17, R 4.2).
+    1.  Generates a master `makefile` that controls both the R execution and the Stata verification protocols.
+    2.  Hardcodes the pseudo-random generator `seed` across both environments for Monte Carlos.
+    3.  Writes comprehensive `README` documentation (including software versions like Stata 17+, R 4.2+).
     4.  Outputs proprietary datasets in dual formats (e.g., `.dta` and `.csv`/ASCII).
 
 ### Robustness Checks & Falsification
