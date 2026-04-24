@@ -108,8 +108,18 @@ To operate autonomously, the ESA Engine initiates every analysis by applying a s
     *   The engine tests distribution assumptions. If errors are non-normal or heteroskedastic, it autonomously shifts away from parametric methods toward robust, nonparametric estimation (kernels, sieves).
     *   If endogeneity or unobserved heterogeneity is detected, the engine mandates structural heterogeneity parameters or robust control strategies.
 
+### The Codebase Architecture: Autonomous Package Selection & Execution
+To execute these heuristics without crashing due to LLM coding hallucinations, the ESA Engine codebase is physically structured as a deterministic pipeline:
+
+1.  **The Blueprint Parser (LLM $\rightarrow$ JSON)**: The Orchestrator does *not* write R code directly from the natural language Synopsis. Instead, it generates a rigid `AnalysisBlueprint.json`. This JSON explicitly maps the dataset headers to theoretical variables (Dependent, Treatment, Controls).
+2.  **Autonomous Package Selection (LightRAG + Profiler)**: EconoSuite dynamically selects the optimal CRAN package by fusing the dataset profile with journal guidelines.
+    *   *Example*: If the topic involves staggered policy rollouts across states, LightRAG informs the Agent that standard Two-Way Fixed Effects (TWFE) is biased. The Agent autonomously ignores base R and forces the inclusion of `"recommended_packages": ["did", "bacondecomp"]` into the Blueprint JSON.
+    *   *Data Trigger*: If the Profiler detects thousands of covariates but limited observations, it forces the inclusion of `"xgboost"` or `"glmnet"`.
+3.  **The ESA Factory (Python Jinja2 Templating)**: Instead of "freestyling" scripts, a Python module (`esa_generator.py`) reads the `AnalysisBlueprint.json` and injects the parameters into pre-tested, hardened **Jinja2 R Templates** (e.g., `did_twfe_template.R`, `iv_regression_template.R`). This completely guarantees flawless syntax during execution.
+4.  **The Falsification Loop**: Python runs the generated script via `subprocess`. If a statistical error occurs (e.g., "Matrix computationally singular"), Python feeds the error back to a Debugger LLM to alter the JSON blueprint and autonomously retry.
+
 ### Core Econometric Methodologies
-The heuristic directly triggers computation across four major pillars:
+The heuristic and the ESA Factory trigger computation across four major pillars:
 1.  **Causal Inference & Treatment Effects**:
     *   *Handlers*: Randomized Controlled Trials (RCTs), Instrumental Variables (`AER::ivreg`), Difference-in-Differences (`did`, `bacondecomp`), Regression Discontinuity Design (`rdrobust`), Regression Kink Design, and Synthetic Controls (`Synth`).
     *   *Estimators*: Functionality explicitly targets the Average Treatment Effect (ATE), Average Treatment Effect on the Treated (ATT), Local Average Treatment Effect (LATE), Marginal Treatment Effects (MTE), and Quantile (QTE).
