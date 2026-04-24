@@ -43,7 +43,11 @@ The text generation process in EconoSuite is far more rigorous than standard pro
 Economic manuscripts require absolute mathematical and narrative synchronization between the theory, the identification strategy, and the empirical results. The Unified Engine achieves this natively across all pipelines through:
 *   **Constitutional Validation**: Before any drafted section is finalized, an autonomous critic agent audits the text against the original hypotheses and theoretical models. The engine strictly avoids the "history of the trial-and-error process," ensuring the text is a precisely engineered argument.
 *   **Statistical Auditing**: The text generator dynamically reads the output artifacts from the ESA Engine. It injects valid coefficients directly into the text, neutralizing hallucinated values.
-*   **Concrete vs. Abstract Lexicon**: Based on NLP reviews of desk-rejected AER papers, the engine forces "concrete and descriptive" terminology, actively scoring and rejecting overly abstract linguistic framing.
+*   **Mandatory Structural Guidelines (The "Unwritten Rules")**:
+    *   **The "Keith Head" Introduction Formula:** The engine enforces a rigid 5-step introduction: Hook, Question, Antecedents, Value-Added, and Roadmap.
+    *   **The "John Cochrane" Rule (No Suspense):** The drafting agent is constrained to state the primary empirical findings on page one, actively preventing "mystery novel" structures.
+*   **Concrete vs. Abstract Lexicon (McCloskey Constraints)**: Based on Deirdre McCloskey's *Economical Writing*, the engine forces active voice and "concrete and descriptive" terminology, actively scoring and rejecting overly abstract linguistic framing or passive phrasing (e.g., rejecting "it should be noted that").
+*   **Trade Terminology Enforcement**: When the `JELClassifier.py` tags the paper as International Trade (e.g., F10, F14), the engine strictly maps concepts to formal trade nomenclature: enforcing distinctions between *Intensive/Extensive Margins*, defining shipping frictions strictly as *Iceberg Transport Costs*, and requiring *Multilateral Resistance Terms* in any Gravity Model discussion.
 
 ### 2.2 Iterative RAG Drafting Pipeline
 1.  **Ingestion & Mapping**: The engine pulls specifically tagged chunks from the Semantic Scholar/RePEc vector database.
