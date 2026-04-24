@@ -8,24 +8,28 @@
 
 EconoSuite operates on a unified, state-machine-driven **Orchestration Engine**, executing tasks through multi-phase Directed Acyclic Graphs (DAGs). The system guarantees end-to-end consistency, moving autonomously from literature ingestion to executable code generation and final manuscript compilation.
 
+### The Master Synopsis (The Core Blueprint)
+A fundamental concept of EconoSuite is that the system is heavily front-loaded. Rather than expecting the user to manually micromanage every stage, Phase 1 autonomously generates a highly detailed **Master Synopsis** (`Synopsis.md`). 
+This AI-generated Synopsis locks in the research topic, theoretical background, causal endpoints, required datasets, and the exact econometric identification strategy. **Every subsequent phase of the pipeline is strictly guided by, and validated against, this single Master Synopsis.**
+
 ### The 10-Phase Pipeline
-The engine navigates a strict 10-phase sequence:
-1. **Ideation & Hypothesis Formulation**
-2. **Literature Ingestion & Synthesis**
-3. **Identification Strategy Design**
-4. **Data Preprocessing & Validation**
-5. **Econometric Analysis (ESA execution)**
-6. **Robustness & Falsification Testing**
-7. **Manuscript Drafting (Gatekeeping & Methodologies)**
-8. **Mathematical Typography & Table Generation**
+The engine navigates a strict sequence governed by the Synopsis:
+1. **Ideation & Master Synopsis Generation** (EconoSuite drafts the blueprint).
+2. **Literature Ingestion & Synthesis** (RAG queries strictly scoped to the Synopsis).
+3. **Identification Strategy Formalization** (Mathematical lockdown of the Synopsis).
+4. **Data Preprocessing & Harmonization** (Fetching specific variables dictated by the Synopsis).
+5. **Econometric Analysis (ESA execution)** (Blueprint converted to Jinja2 R templates).
+6. **Robustness & Falsification Testing** (Testing validity threats defined in the Synopsis).
+7. **Manuscript Drafting** (The narrative must reflect the original Synopsis endpoints).
+8. **Mathematical Typography & Table Compilation**
 9. **Constitutional Formatting Validation (AEA/QJE Guidelines)**
 10. **Final Compilation & Replication Package (PDF/HWPX/Makefiles)**
 
 ### Identification Strategy Design (Phase 3)
-EconoSuite formalizes the economic approach *before* any data is touched. Through the Orchestration Engine, it enforces a strict sequence:
-*   **Formalizing the Counterfactual**: Clearly defining the experimental or quasi-experimental ideal before writing the empirical specification.
+Before touching data, EconoSuite translates the Master Synopsis into a strict mathematical approach:
+*   **Formalizing the Counterfactual**: Clearly defining the experimental or quasi-experimental ideal based on the endpoints in the Synopsis.
 *   **Identifying Assumptions**: Explicitly documenting and validating the relevance and exogeneity of instruments (for IV), or proving the parallel trends assumption (for DiD) via simulation or pre-trend data.
-*   **Threats to Validity Parsing**: The RAG architecture actively researches known threats to the chosen strategy (e.g., anticipation effects, spillover, or sorting around the threshold in RDD) and drafts robust counter-arguments or falsification tests to preempt reviewer critiques.
+*   **Threats to Validity Parsing**: The RAG architecture actively researches known threats to the chosen strategy and mandates robust counter-arguments to preempt reviewer critiques.
 
 ---
 
