@@ -18,6 +18,11 @@ source("install_econ_packages.R")
 *   **`fixest`**: A modern powerhouse for econometrics. It estimates regressions with multiple fixed effects extremely fast. It also natively handles robust/clustered standard errors.
 *   **`AER`**: Contains tools for **Instrumental Variables (IV)** regression (`ivreg`), which is essential for addressing endogeneity.
 *   **`sandwich` & `lmtest`**: Used together to compute and apply robust standard errors (Heteroskedasticity-consistent (HC) and cluster-robust errors) to standard OLS models (`lm`).
+*   **`marginaleffects`**: The modern standard for computing marginal effects, adjusted predictions, and contrasts for almost any model (especially crucial for non-linear models like Logit/Probit).
+*   **`quantreg`**: Essential for estimating Quantile Regressions (estimating the median or other quantiles rather than the conditional mean).
+*   **`mlogit`**: The primary package for estimating Multinomial Logit models (discrete choice modeling).
+*   **`sampleSelection`**: Provides tools for estimating Heckman selection models to correct for non-random sample selection bias.
+*   **`gmm`**: A complete framework for Generalized Method of Moments (GMM) estimation.
 
 ### B. Time Series Analysis
 *   **`urca`**: Essential for testing stationarity (e.g., Augmented Dickey-Fuller, KPSS) and cointegration (e.g., Johansen test).

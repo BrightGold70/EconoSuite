@@ -32,7 +32,16 @@ core_econometrics <- c(
   "fixest"        # Extremely fast and efficient high-dimensional fixed-effects estimation
 )
 
-# 3. Time Series Analysis
+# 3. Microeconometrics & Advanced Inference
+micro_econometrics <- c(
+  "marginaleffects", # Calculating marginal effects and adjusted predictions
+  "quantreg",        # Quantile regression
+  "mlogit",          # Multinomial logit models
+  "sampleSelection", # Heckman selection models
+  "gmm"              # Generalized Method of Moments estimation
+)
+
+# 4. Time Series Analysis
 time_series <- c(
   "forecast",     # Forecasting functions for time series (ARIMA, exponential smoothing)
   "tseries",      # Time series analysis and computational finance
@@ -40,7 +49,7 @@ time_series <- c(
   "vars"          # Vector autoregressive (VAR) models
 )
 
-# 4. Causal Inference & Advanced Modeling
+# 5. Causal Inference & Advanced Modeling
 causal_inference <- c(
   "MatchIt",      # Propensity score matching and weighting
   "rdrobust",     # Regression Discontinuity Designs
@@ -49,7 +58,7 @@ causal_inference <- c(
   "bacondecomp"   # Goodman-Bacon decomposition for TWFE DiD models
 )
 
-# 5. Machine Learning & High-Dimensional Controls
+# 6. Machine Learning & High-Dimensional Controls
 machine_learning <- c(
   "glmnet",       # Lasso and Elastic-Net (regularized regression)
   "grf",          # Generalized Random Forests (causal forests)
@@ -58,7 +67,7 @@ machine_learning <- c(
   "shapviz"       # SHAP values for Explainable AI (interpreting ML models)
 )
 
-# 6. Data Fetching APIs (World Bank, FRED, Stocks, WTO)
+# 7. Data Fetching APIs (World Bank, FRED, Stocks, WTO)
 data_fetching <- c(
   "WDI",          # World Development Indicators (World Bank)
   "quantmod",     # Financial modeling and trading framework
@@ -68,7 +77,7 @@ data_fetching <- c(
   "remotes"       # Needed to install non-CRAN packages from GitHub (e.g., wtor)
 )
 
-# 7. International Trade & Multi-Nation Economics
+# 8. International Trade & Multi-Nation Economics
 international_trade <- c(
   "comtradr",         # UN Comtrade Database API (import/export data)
   "tradestatistics",  # Open Trade Statistics (OTS) API
@@ -77,13 +86,13 @@ international_trade <- c(
   "leontief"          # Input-Output analysis for global value chains
 )
 
-# 8. Spatial Econometrics
+# 9. Spatial Econometrics
 spatial_econometrics <- c(
   "sf",           # Simple Features (modern spatial data handling)
   "spatialreg"    # Spatial regression models
 )
 
-# 9. Data Visualization & Interactive Graphics (e.g., Sankey)
+# 10. Data Visualization & Interactive Graphics (e.g., Sankey)
 data_visualization <- c(
   "networkD3",    # Interactive Sankey and network diagrams
   "ggalluvial",   # Alluvial plots (Sankey-style) for ggplot2
@@ -94,7 +103,7 @@ data_visualization <- c(
   "viridis"       # Colorblind-friendly, publication-quality color palettes
 )
 
-# 10. Basic Statistics & Reporting for Manuscripts
+# 11. Basic Statistics & Reporting for Manuscripts
 basic_stats <- c(
   "psych",        # Essential descriptive stats (describe()) and reliability
   "Hmisc",        # Advanced correlations (rcorr()) and basic stats
@@ -104,7 +113,7 @@ basic_stats <- c(
   "report"        # Automatically translates statistical models into APA manuscript text
 )
 
-# 11. Journal Formatting & Advanced Tables (LaTeX / HTML / Word)
+# 12. Journal Formatting & Advanced Tables (LaTeX / HTML / Word)
 reporting <- c(
   "stargazer",    # Classic tool for generating beautiful LaTeX/HTML regression tables
   "modelsummary", # Modern, highly customizable table generator for models
@@ -114,7 +123,7 @@ reporting <- c(
 )
 
 # Combine all packages
-all_packages <- c(data_science, core_econometrics, time_series, causal_inference, machine_learning, data_fetching, international_trade, spatial_econometrics, data_visualization, basic_stats, reporting)
+all_packages <- c(data_science, core_econometrics, micro_econometrics, time_series, causal_inference, machine_learning, data_fetching, international_trade, spatial_econometrics, data_visualization, basic_stats, reporting)
 
 # Execute the installation
 message("Starting EconoSuite package installation for macOS...")
