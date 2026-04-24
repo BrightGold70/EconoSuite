@@ -78,14 +78,19 @@ EconoSuite integrates specialized data ingestion APIs to ensure the research is 
 The analytical core of EconoSuite bypasses traditional biostatistics in favor of rigorous, modern theoretical econometrics capable of executing and diagnosing modern empirical designs. 
 
 ### Data Ingestion & Profiling Protocol
-Because EconoSuite autonomously dictates the statistical pipeline, it mandates a strict, machine-readable data input sequence before any econometrics invoke:
-1.  **The Dual Supply Mandate**: The user must supply two assets:
-    *   The Raw Data Matrix: Provided in `.csv` or standard Stata `.dta` formats.
-    *   The `ResearchSchema.yaml`: A metadata file exclusively outlining the "Working Title" (for intent parsing) and explicitly designating the column string for the Dependent ($Y$) variable.
+Because EconoSuite autonomously dictates the statistical pipeline, data collection is executed only *after* the theoretical architecture (Phase 3) dictates the exact variables required. EconoSuite supports two distinct ingestion pathways:
+
+#### Pathway A: Autonomous API Data Deduction (Preferred)
+1.  **Topic Analysis via LightRAG**: The user submits a natural language research topic. The Orchestrator queries the local LightRAG database to deduce the necessary theoretical variables (e.g., Gravity models require Bilateral Trade, GDP, and Distance).
+2.  **Parameter Inference & LLM Tool Use**: The agent autonomously maps these theoretical variables into precise API parameters. Using native function calling, it triggers predefined tools (e.g., `fetch_comtrade()`, `fetch_wdi()`, `fetch_wto()`).
+3.  **Dynamic Script Execution & Harmonization**: EconoSuite dynamically writes an R/Python script to fetch the exact data vector from the internet, handling API pagination and rate limits. The raw data is automatically harmonized into a structural panel dataset before the ESA Engine triggers.
+
+#### Pathway B: The Manual Supply Mandate (For Proprietary Data)
+1.  **The Dual Supply Mandate**: For non-public data, the user must supply two assets: The Raw Data Matrix (`.csv` or `.dta`) and a `ResearchSchema.yaml` designating the Dependent ($Y$) variable.
 2.  **Autonomous Matrix Profiler (Pre-Flight Phase)**: EconoSuite loads the data matrix using pandas/NumPy to scan the specific $Y$ array.
     *   If $Y \in \{0, 1\}$, it tags the data as Binary.
-    *   If $Y \ge 0$ with mass accumulation at $0$ (or boundary limits), it tags the data as Censored.
-    *   It runs initial Shapiro-Wilk and Breusch-Pagan testing to verify homoskedastic parameters prior to the heuristic engine.
+    *   If $Y \ge 0$ with mass accumulation at $0$, it tags the data as Censored.
+    *   It runs initial Shapiro-Wilk and Breusch-Pagan testing to verify homoskedastic parameters.
 
 ### Automated Method Selection Heuristic
 To operate autonomously, the ESA Engine initiates every analysis by applying a strict heuristic to the dataset and research title to map out the theoretical Data Generation Process (DGP) before running models:
