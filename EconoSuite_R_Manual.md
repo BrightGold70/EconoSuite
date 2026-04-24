@@ -24,14 +24,18 @@ source("install_econ_packages.R")
 *   **`vars`**: For estimating and forecasting Vector Autoregression (VAR) and Vector Error Correction (VECM) models.
 *   **`forecast`**: Provides automated time-series forecasting (e.g., `auto.arima`).
 
-### C. Causal Inference
+### C. Causal Inference & Difference-in-Differences
 *   **`MatchIt`**: Used for propensity score matching to reduce selection bias in observational data.
 *   **`rdrobust`**: The standard toolkit for Regression Discontinuity (RD) designs.
 *   **`Synth`**: Used for Synthetic Control Methods, popular for state-level policy evaluation.
+*   **`did`**: The industry standard package for modern **staggered Difference-in-Differences** models, implementing the Callaway and Sant'Anna (2021) estimator.
+*   **`bacondecomp`**: Used to perform the Goodman-Bacon decomposition to diagnose bias in traditional Two-Way Fixed Effects (TWFE) DiD models.
 
-### D. Machine Learning & High-Dimensional Controls
+### D. Machine Learning & Explainable AI (XAI)
 *   **`glmnet`**: The standard package for Lasso and Elastic-Net regularized regression, often used for selecting controls in high-dimensional datasets.
 *   **`grf`**: Generalized Random Forests. Used for estimating heterogeneous treatment effects using causal forests.
+*   **`xgboost`**: The absolute workhorse for gradient boosting prediction models. Often outperforms standard linear models for forecasting.
+*   **`shapviz`**: Critical for Explainable AI (XAI). Provides visual and analytical tools to compute **SHAP values**, explaining exactly how your ML models (like XGBoost) make their predictions.
 *   **`estimatr`**: Provides extremely fast estimators for design-based inference, including robust standard errors (`lm_robust`) and linear-in-means models.
 
 ### E. Data Fetching & Web APIs

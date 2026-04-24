@@ -44,14 +44,18 @@ time_series <- c(
 causal_inference <- c(
   "MatchIt",      # Propensity score matching and weighting
   "rdrobust",     # Regression Discontinuity Designs
-  "Synth"         # Synthetic Control Methods for comparative case studies
+  "Synth",        # Synthetic Control Methods for comparative case studies
+  "did",          # Modern Difference-in-Differences (Callaway & Sant'Anna)
+  "bacondecomp"   # Goodman-Bacon decomposition for TWFE DiD models
 )
 
 # 5. Machine Learning & High-Dimensional Controls
 machine_learning <- c(
   "glmnet",       # Lasso and Elastic-Net (regularized regression)
   "grf",          # Generalized Random Forests (causal forests)
-  "estimatr"      # Fast estimators for design-based inference (robust SEs)
+  "estimatr",     # Fast estimators for design-based inference (robust SEs)
+  "xgboost",      # Extreme Gradient Boosting (high-performance ML prediction)
+  "shapviz"       # SHAP values for Explainable AI (interpreting ML models)
 )
 
 # 6. Data Fetching APIs (World Bank, FRED, Stocks, WTO)
