@@ -23,6 +23,7 @@ source("install_econ_packages.R")
 *   **`mlogit`**: The primary package for estimating Multinomial Logit models (discrete choice modeling).
 *   **`sampleSelection`**: Provides tools for estimating Heckman selection models to correct for non-random sample selection bias.
 *   **`gmm`**: A complete framework for Generalized Method of Moments (GMM) estimation.
+*   **`np`**: The primary package for Nonparametric econometrics. Essential for flexible distributions, kernel regression, and nearest-neighbor weights without relying on rigid functional forms.
 
 ### B. Time Series Analysis
 *   **`urca`**: Essential for testing stationarity (e.g., Augmented Dickey-Fuller, KPSS) and cointegration (e.g., Johansen test).
@@ -42,6 +43,7 @@ source("install_econ_packages.R")
 *   **`xgboost`**: The absolute workhorse for gradient boosting prediction models. Often outperforms standard linear models for forecasting.
 *   **`shapviz`**: Critical for Explainable AI (XAI). Provides visual and analytical tools to compute **SHAP values**, explaining exactly how your ML models (like XGBoost) make their predictions.
 *   **`estimatr`**: Provides extremely fast estimators for design-based inference, including robust standard errors (`lm_robust`) and linear-in-means models.
+*   **`MCMCpack`**: Contains frameworks for Markov Chain Monte Carlo (MCMC) and Metropolis-Hastings (MH) samplers for computationally intensive Bayesian simulation.
 
 ### E. Data Fetching & Web APIs
 *   **`WDI`**: Directly downloads data from the World Bank's World Development Indicators into your R environment.
