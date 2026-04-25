@@ -42,7 +42,7 @@ To overcome these translation challenges and operate autonomously, EconoSuite re
     *   **`UnifiedTableEngine`**: The centralized system controlling all table-related formatting, compilation, constraints, and alignment.
     *   **`UnifiedFigureEngine`**: The centralized system controlling all figure-related operations, layout, rendering, and accessibility compliance.
     *   **`UnifiedReferenceEngine`**: The centralized engine controlling all EndNote tagging, citation formatting, and the generation of the final bibliographic library.
-2.  **End-to-End NotebookLM (NLM) Integration (Most Important)**: Throughout the entire lifecycle of EconoSuite, general sources and comprehensive text generation must be maintained and routed through NotebookLM integration. NLM acts as the master knowledge synthesis engine, dictating the truth for the drafting process.
+2.  **End-to-End NotebookLM (NLM) Integration (Most Important)**: Throughout the entire lifecycle of EconoSuite, general sources and comprehensive text generation must be maintained and routed through NotebookLM integration. This integration is explicitly powered by the **`notebooklm-py`** library (`https://github.com/teng-lin/notebooklm-py.git`). NLM acts as the master knowledge synthesis engine, dictating the truth for the drafting process.
 
 ---
 
