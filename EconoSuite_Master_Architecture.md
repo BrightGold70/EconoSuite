@@ -4,299 +4,142 @@
 
 ---
 
-## 1. System Overview & Core Orchestration
+## 1. System Overview & The HemaSuite Lineage
 
-EconoSuite operates on a unified, state-machine-driven **Orchestration Engine**, executing tasks through multi-phase Directed Acyclic Graphs (DAGs). The system guarantees end-to-end consistency, moving autonomously from literature ingestion to executable code generation and final manuscript compilation.
+### 1.1 The HemaSuite Lineage & Cross-Disciplinary Translation
+EconoSuite is a direct clone and architectural fork of **HemaSuite**, inheriting its robust manuscript drafting and statistical compilation structures originally designed for hematology. Because the many Unified Systems governing this process are extensively documented in the `HemaSuite_Architecture_Note.md` file, **EconoSuite must closely review that reference document** when designing the architecture and structure for the porting plan.
 
-### The Master Synopsis (The Core Blueprint)
-A fundamental concept of EconoSuite is that the system is heavily front-loaded. Rather than expecting the user to manually micromanage every stage, Phase 1 autonomously generates a highly detailed **Master Synopsis** (`Synopsis.md`). 
-This AI-generated Synopsis locks in the research topic, theoretical background, causal endpoints, required datasets, and the exact econometric identification strategy. **Every subsequent phase of the pipeline is strictly guided by, and validated against, this single Master Synopsis.**
+Porting this system to economics requires navigating significant cross-disciplinary friction points. The architecture addresses these fundamental differences through a precise anatomic translation across seven major axes:
 
-### The 10-Phase Pipeline
-The engine navigates a strict sequence governed by the Synopsis:
+*   **1. Epistemological Approach (Trial Design vs. Identification Strategy)**: 
+    *   *Hematology*: Relies heavily on prospective Randomized Controlled Trials (RCTs), blinding, and cohort assignments as the gold standard.
+    *   *Economics*: Relies heavily on retrospective observational data, requiring rigorous "Identification Strategies" (Natural Experiments, Instrumental Variables, Regression Discontinuity) to isolate causal counterfactuals from endogenous noise.
+*   **2. Data Paradigms & Privacy Models**: 
+    *   *Hematology*: Patient-level data governed by strict clinical privacy laws (HIPAA, patient consent), often with smaller, highly controlled sample sizes subject to loss-to-follow-up.
+    *   *Economics*: Massive administrative, geographic, or macro-level panel datasets (often millions of rows) requiring complex harmonizations. Missing data is often treated as an endogenous selection bias (e.g., Heckman models) rather than random attrition.
+*   **3. Statistical Engines (Biostatistics vs. Econometrics)**: 
+    *   *Hematology (HemaSuite)*: Biostatistical core focusing on survival analysis (Kaplan-Meier, Cox proportional hazards), incidence rates, odds ratios, and adverse event toxicity.
+    *   *Economics (EconoSuite)*: Econometric core battling Unobserved Heterogeneity and Endogeneity. Requires high-dimensional Fixed Effects (Two-Way/Multi-Way), Staggered Difference-in-Differences (Bacon decomposition), and Instrumental Variables.
+*   **4. Standard Error Architecture**:
+    *   *Hematology*: Often assumes independence of observations within a trial or simple trial stratifications.
+    *   *Economics*: Enforces strict clustering assumptions. EconoSuite must default to Heteroskedasticity-Robust and Multi-Way Clustered Standard Errors (e.g., clustered by state or industry) to prevent false-positive significance in panel data.
+*   **5. Graphical Evidence Requirements**:
+    *   *Hematology*: Emphasizes Kaplan-Meier survival curves, Forest plots, and PRISMA flow diagrams.
+    *   *Economics*: Demands Event Study plots (to prove parallel pre-trends for DiD), McCrary density plots (to prove no manipulation of the running variable in RDD), and coefficient stability plots.
+*   **6. Structural Theory vs. Pure Empirics**:
+    *   *Hematology*: Largely empirically driven, focusing directly on clinical outcomes and physiological efficacy.
+    *   *Economics*: Frequently mandates a formal mathematical "Structural Model" or utility-maximizing theoretical framework *before* empirical testing can begin, to justify the economic mechanism.
+*   **7. Publication Standards & Terminology**: 
+    *   *Hematology*: Strict adherence to medical terminology (SNOMED/ICD-10), PubMed/MeSH indexing, and clinical reporting guidelines (CONSORT, STROBE).
+    *   *Economics*: Strict adherence to McCloskey/Keith Head writing structures, JEL (Journal of Economic Literature) indexing, RePEc/NBER working paper reliance, and mandatory reproducible data/code packages for AEA/QJE submission.
+
+### 1.2 Core Architectural Principles (The Two Pillars)
+To overcome these translation challenges and operate autonomously, EconoSuite relies on two unshakeable pillars:
+
+1.  **The Unified Principle (Most Important)**: All functions across the pipeline are integrated and centralized by the overarching **`UnifiedEngine`**. This master engine controls the whole process of text generation, preventing disjointed formatting and ensuring global continuity. The `UnifiedEngine` governs several specialized sub-engines:
+    *   **`KnowledgeOrchestrator`**: The singular, centralized control mechanism responsible for all evidence collection, validation, and fetching of strict economic evidence.
+    *   **`UnifiedTriOrchestrator`**: The specialized tripartite logic engine responsible for the strict "prove/write/verify" drafting cycle, ensuring that every generated claim is mathematically and theoretically verified before being committed to the manuscript.
+    *   **`UnifiedTableEngine`**: The centralized system controlling all table-related formatting, compilation, constraints, and alignment.
+    *   **`UnifiedFigureEngine`**: The centralized system controlling all figure-related operations, layout, rendering, and accessibility compliance.
+    *   **`UnifiedReferenceEngine`**: The centralized engine controlling all EndNote tagging, citation formatting, and the generation of the final bibliographic library.
+2.  **End-to-End NotebookLM (NLM) Integration (Most Important)**: Throughout the entire lifecycle of EconoSuite, general sources and comprehensive text generation must be maintained and routed through NotebookLM integration. NLM acts as the master knowledge synthesis engine, dictating the truth for the drafting process.
+
+---
+
+## 2. Advanced Mellel-Inspired Section System & DOCX Assembly
+
+Rather than treating the manuscript as a monolithic text block with a fixed flow, EconoSuite adopts an advanced, tag-based "Section-Slicing" methodology inspired by Mellel. 
+
+### 2.1 Dynamic Tag-Based Sectioning
+The document is divided into modular, isolated sections. Every section is assigned a unique, isolated structural tag (e.g., `[SECTION: INTRO]`, `[SECTION: ROBUSTNESS]`). This allows sections to be drafted, revised, and validated completely independently of one another.
+
+### 2.2 NLM-Generated Local Section Corpus (Truth Reservoir)
+Each tagged section is backed by its own dedicated "Truth Reservoir". **While these corpora are stored physically in the local project folder, 100% of their content is generated by querying NotebookLM via the `KnowledgeOrchestrator`.** This ensures that the local files contain pristine, NLM-validated text that acts as the isolated evidence base for that specific section tag, avoiding cross-contamination of facts.
+
+### 2.3 Adjustable Assembly & Template-Based DOCX Compilation
+The combination of sections is **not bound by a fixed order**. The DOCX Template Compiler reads a dynamic assembly configuration, allowing authors to instantly shuffle, reorder, or omit sections on the fly during compilation without breaking the document's flow. 
+The Template Compiler stitches these dynamically ordered tags and local reservoirs together into a unified **DOCX document**, autonomously resolving continuous mathematical numbering, cross-references, and global formatting across the isolated slices.
+
+---
+
+## 3. The 10-Phase Pipeline
+The engine navigates a strict sequence governed by the Master Synopsis (`Synopsis.md`):
 1. **Ideation & Master Synopsis Generation** (EconoSuite drafts the blueprint).
-2. **Literature Ingestion & Synthesis** (RAG queries strictly scoped to the Synopsis).
-3. **Identification Strategy Formalization** (Mathematical lockdown of the Synopsis).
+2. **Literature Ingestion & Synthesis** (NLM queries via the KnowledgeOrchestrator).
+3. **Identification Strategy Formalization** (Mathematical lockdown).
 4. **Data Preprocessing & Harmonization** (Fetching specific variables dictated by the Synopsis).
 5. **Econometric Analysis (ESA execution)** (Blueprint converted to Jinja2 R templates).
 6. **Robustness & Falsification Testing** (Testing validity threats defined in the Synopsis).
-7. **Manuscript Drafting** (The narrative must reflect the original Synopsis endpoints).
-8. **Mathematical Typography & Table Compilation**
+7. **Modular Drafting (Section-Slicing)** (Drafting tagged sections backed by NLM Truth Reservoirs).
+8. **Unified Assembly** (`UnifiedTableEngine` and `UnifiedFigureEngine` execution).
 9. **Constitutional Formatting Validation (AEA/QJE Guidelines)**
-10. **Final Compilation & Replication Package (PDF/HWPX/Makefiles)**
-
-### Identification Strategy Design (Phase 3)
-Before touching data, EconoSuite translates the Master Synopsis into a strict mathematical approach:
-*   **Formalizing the Counterfactual**: Clearly defining the experimental or quasi-experimental ideal based on the endpoints in the Synopsis.
-*   **Identifying Assumptions**: Explicitly documenting and validating the relevance and exogeneity of instruments (for IV), or proving the parallel trends assumption (for DiD) via simulation or pre-trend data.
-*   **Threats to Validity Parsing**: The RAG architecture actively researches known threats to the chosen strategy and mandates robust counter-arguments to preempt reviewer critiques.
+10. **Final Compilation & Replication Package (DOCX/Makefiles/PDFs)**
 
 ---
 
-## 2. The Unified Engine: Comprehensive Submission Pathways
+## 4. The ESA (Economic-Statistic-Analysis) Engine & Data Ingestion
 
-The text generation process in EconoSuite is far more rigorous than standard prompt-completion. It utilizes a **Unified Engine** built upon a high-fidelity Retrieval-Augmented Generation (RAG) architecture. At initialization, the user explicitly declares the manuscript's underlying methodology and formal submission category. This categorizes the graph execution into a **Five-Tier Pipeline Architecture**:
+### 4.1 Data Ingestion & Profiling Protocol
+Because EconoSuite autonomously dictates the statistical pipeline, data collection is executed only *after* the theoretical architecture dictates the exact variables required. EconoSuite supports two ingestion pathways:
 
-1.  **The Empirical (Data-Driven) Pipeline**: The flagship EconoSuite pathway for *Original Research*. Expects distinct tabular data. Triggers the ESA Engine (Data Profiler, Method Heuristic), generates Stata Repliation Packages, and distinguishes implicitly between Structural vs. Reduced-Form models depending on the title intent.
-2.  **The Pure Theoretical Pipeline**: Handles *Theoretical Papers* and *Methodological / Econometric Papers*. Entirely bypasses Data Profiling and Stata. Instead, tightly couples the RAG engine directly to the `LaTeXMathCompiler` to continuously validate and render pure economic theory, proofs, and internal consistency checks using EconoSyntax without waiting for dataset parameters.
-3.  **The Comprehensive Review Pipeline**: Designed for *Review Articles, Essays, Book Reviews, Editorials*, and *Interviews*. Maximizes Semantic Scholar API timeouts for exhaustive literature digestion and critical evaluation. Retains the capability to generate PRISMA Flow Diagrams for rigid scoping submissions.
-4.  **The Short Communications Pipeline**: Tailored for *Notes, Miscellanea, and Replies*. Truncates the Keith Head introduction constraints and strips vast literature digests in favor of ultra-concise, single-innovation reporting frameworks.
-5.  **The Proposal / Protocol Pipeline**: Exclusively tailored for domestic funding. Suppresses all LaTeX compilation. The RAG outputs are mandated to be drafted entirely in **Korean language** to align with domestic standards. The generated Korean text blocks are securely mapped into the **HWPX/OWPML Protocol Generator** to compile into formatting-strict Korean government templates (e.g., NRF or KDI grant `.hwpx` files).
+1.  **Autonomous API Data Deduction (Preferred)**: The `KnowledgeOrchestrator` deduces variables and fetches data directly via APIs (e.g., Comtrade, WDI).
+2.  **The Manual Supply Mandate (For Proprietary Data)**: The user supplies the raw data matrix and a `ResearchSchema.yaml`.
+    *   **Synthetic Data Generation Mandate**: If proprietary data is used, the system **must autonomously generate a script that produces a synthetic/mock dataset** mirroring the distributional properties of the raw data. This is a hard requirement to ensure that the generated replication code can run without crashing during peer review when the actual data is restricted.
 
-### 2.1 Cross-Section Consistency & Auditing
-Economic manuscripts require absolute mathematical and narrative synchronization between the theory, the identification strategy, and the empirical results. The Unified Engine achieves this natively across all pipelines through:
-*   **Constitutional Validation**: Before any drafted section is finalized, an autonomous critic agent audits the text against the original hypotheses and theoretical models. The engine strictly avoids the "history of the trial-and-error process," ensuring the text is a precisely engineered argument.
-*   **Statistical Auditing**: The text generator dynamically reads the output artifacts from the ESA Engine. It injects valid coefficients directly into the text, neutralizing hallucinated values.
-*   **Mandatory Structural Guidelines (The "Unwritten Rules")**:
-    *   **The "Keith Head" Introduction Formula:** The engine enforces a rigid 5-step introduction: Hook, Question, Antecedents, Value-Added, and Roadmap.
-    *   **The "John Cochrane" Rule (No Suspense):** The drafting agent is constrained to state the primary empirical findings on page one, actively preventing "mystery novel" structures.
-*   **Concrete vs. Abstract Lexicon (McCloskey Constraints)**: Based on Deirdre McCloskey's *Economical Writing*, the engine forces active voice and "concrete and descriptive" terminology, actively scoring and rejecting overly abstract linguistic framing or passive phrasing (e.g., rejecting "it should be noted that").
-*   **Trade Terminology Enforcement**: When the `JELClassifier.py` tags the paper as International Trade (e.g., F10, F14), the engine strictly maps concepts to formal trade nomenclature: enforcing distinctions between *Intensive/Extensive Margins*, defining shipping frictions strictly as *Iceberg Transport Costs*, and requiring *Multilateral Resistance Terms* in any Gravity Model discussion.
+### 4.2 Automated Method Selection & Execution
+EconoSuite dynamically selects the optimal CRAN package by fusing the dataset profile with journal guidelines (e.g., shifting to `did` and `bacondecomp` if staggered rollouts are detected). R and Stata scripts are auto-generated via Jinja2 templates, ensuring dual-language compliance.
 
-### 2.2 Iterative RAG Drafting Pipeline
-1.  **Ingestion & Mapping**: The engine pulls specifically tagged chunks from the Semantic Scholar/RePEc vector database.
-2.  **Constraint Enforcement**: The text generation prompt is layered with AEA/QJE journal-specific constraints (e.g., abstract length limits, tone, specific vocabulary).
-3.  **Section Drafting (DAG Execution)**: Text is drafted in a non-linear Directed Acyclic Graph. For instance, the "Data & Methodology" section is drafted *simultaneously* with the "Robustness Checks" once the ESA engine concludes, but the "Introduction" is locked until all empirical results are finalized and validated.
-
----
-
-## 3. Literature Ingestion & Knowledge Base
-
-EconoSuite integrates specialized data ingestion APIs to ensure the research is grounded in the latest economic theory and working papers.
-
-*   **API & Database Integrations**:
-    *   **Semantic Scholar Graph API**: For deep citation networks and influential paper tracking.
-    *   **RePEc (Research Papers in Economics)**: The definitive repository for economics working papers.
-    *   **NBER Working Papers Indexer**: Continuous scraping of National Bureau of Economic Research publications to ensure state-of-the-art methodology adherence.
-*   **Local LightRAG Architecture (Offline Engine)**:
-    *   To ensure strict compliance with mathematical syntaxes and editorial constraints without internet dependency, EconoSuite deploys a local **LightRAG** (Graph-Enhanced Retrieval-Augmented Generation) system.
-    *   **Guideline Index (`data/guideline/`)**: Indexes the Cochrane, McCloskey, Keith Head, and WTO structural constraints. The drafting agent queries this graph to validate tone, structure, and terminology during the writing phase.
-    *   **Statistical Manual Index (`data/statistics/`)**: Indexes the dense PDF manuals of R packages (e.g., `MCMCpack`, `np`, `did`). The ESA Engine queries this database to extract exact, hallucination-free code parameters and default assumptions during script generation.
-*   **Intelligent JEL Classification**:
-    *   The specialized `JELClassifier.py` autonomously parses abstract content and assigns highly precise Journal of Economic Literature (JEL) indexing codes. EconoSuite enforces the inclusion of at least three relevant codes (e.g., C: Quantitative Methods, D: Microeconomics) to map into the granular subfields required by top journals.
-
----
-
-## 4. The ESA (Economic-Statistic-Analysis) Engine
-
-The analytical core of EconoSuite bypasses traditional biostatistics in favor of rigorous, modern theoretical econometrics capable of executing and diagnosing modern empirical designs. 
-
-### Data Ingestion & Profiling Protocol
-Because EconoSuite autonomously dictates the statistical pipeline, data collection is executed only *after* the theoretical architecture (Phase 3) dictates the exact variables required. EconoSuite supports two distinct ingestion pathways:
-
-#### Pathway A: Autonomous API Data Deduction (Preferred)
-1.  **Topic Analysis via LightRAG**: The user submits a natural language research topic. The Orchestrator queries the local LightRAG database to deduce the necessary theoretical variables (e.g., Gravity models require Bilateral Trade, GDP, and Distance).
-2.  **Parameter Inference & LLM Tool Use**: The agent autonomously maps these theoretical variables into precise API parameters. Using native function calling, it triggers predefined tools (e.g., `fetch_comtrade()`, `fetch_wdi()`, `fetch_wto()`).
-3.  **Dynamic Script Execution & Harmonization**: EconoSuite dynamically writes an R/Python script to fetch the exact data vector from the internet, handling API pagination and rate limits. The raw data is automatically harmonized into a structural panel dataset before the ESA Engine triggers.
-
-#### Pathway B: The Manual Supply Mandate (For Proprietary Data)
-1.  **The Dual Supply Mandate**: For non-public data, the user must supply two assets: The Raw Data Matrix (`.csv` or `.dta`) and a `ResearchSchema.yaml` designating the Dependent ($Y$) variable.
-2.  **Autonomous Matrix Profiler (Pre-Flight Phase)**: EconoSuite loads the data matrix using pandas/NumPy to scan the specific $Y$ array.
-    *   If $Y \in \{0, 1\}$, it tags the data as Binary.
-    *   If $Y \ge 0$ with mass accumulation at $0$, it tags the data as Censored.
-    *   It runs initial Shapiro-Wilk and Breusch-Pagan testing to verify homoskedastic parameters.
-
-### Automated Method Selection Heuristic
-To operate autonomously, the ESA Engine initiates every analysis by applying a strict heuristic to the dataset and research title to map out the theoretical Data Generation Process (DGP) before running models:
-1.  **Selection by Dependent Variable (Data Type):**
-    *   *Continuous Data*: Routes to standard parametric linear models (Ordinary Least Squares - OLS).
-    *   *Discrete/Binary Data* (e.g., Voting, Brand Choice): Routes to Limited Dependent Variable Models (Probit, Logit, Maximum Score Estimators).
-    *   *Censored Data* (e.g., Capped expenditure thresholds): Routes to Censored Regression Models.
-    *   *Duration/Time-to-Event Data* (e.g., Employment lags): Routes to Hazard Models (Cox proportional hazards, Weibull duration models).
-    *   *Endogenously Selected Data* (e.g., Self-selected samples): Routes to Endogenous Sample Selection Models (Heckman).
-2.  **Selection by Topic Title (Research Intent):**
-    *   *Impact / Effect*: Titles suggesting causal relationships compel the system to prioritize exogeneity handlers (Instrumental Variables - IV) over simple descriptive correlation to control for "wrong-way" causality.
-    *   *Policy / Forecasting*: Titles implying policy scenario prediction trigger Structural Modeling invariants rather than historical regression.
-    *   *Topic-Specific Overrides*: Specific keywords trigger rigid mathematical paths (e.g., "Willingness-to-Pay" forces binary response contingent valuation architectures).
-3.  **DGP Diagnostics (The Assumption Check):**
-    *   The engine tests distribution assumptions. If errors are non-normal or heteroskedastic, it autonomously shifts away from parametric methods toward robust, nonparametric estimation (kernels, sieves).
-    *   If endogeneity or unobserved heterogeneity is detected, the engine mandates structural heterogeneity parameters or robust control strategies.
-
-### The Codebase Architecture: Autonomous Package Selection & Execution
-To execute these heuristics without crashing due to LLM coding hallucinations, the ESA Engine codebase is physically structured as a deterministic pipeline:
-
-1.  **The Blueprint Parser (LLM $\rightarrow$ JSON)**: The Orchestrator does *not* write R code directly from the natural language Synopsis. Instead, it generates a rigid `AnalysisBlueprint.json`. This JSON explicitly maps the dataset headers to theoretical variables (Dependent, Treatment, Controls).
-2.  **Autonomous Package Selection (LightRAG + Profiler)**: EconoSuite dynamically selects the optimal CRAN package by fusing the dataset profile with journal guidelines.
-    *   *Example*: If the topic involves staggered policy rollouts across states, LightRAG informs the Agent that standard Two-Way Fixed Effects (TWFE) is biased. The Agent autonomously ignores base R and forces the inclusion of `"recommended_packages": ["did", "bacondecomp"]` into the Blueprint JSON.
-    *   *Data Trigger*: If the Profiler detects thousands of covariates but limited observations, it forces the inclusion of `"xgboost"` or `"glmnet"`.
-3.  **The ESA Factory (Python Jinja2 Templating)**: Instead of "freestyling" scripts, a Python module (`esa_generator.py`) reads the `AnalysisBlueprint.json` and injects the parameters into pre-tested, hardened **Jinja2 R Templates** (e.g., `did_twfe_template.R`, `iv_regression_template.R`). This completely guarantees flawless syntax during execution.
-4.  **The Falsification Loop**: Python runs the generated script via `subprocess`. If a statistical error occurs (e.g., "Matrix computationally singular"), Python feeds the error back to a Debugger LLM to alter the JSON blueprint and autonomously retry.
-
-### Core Econometric Methodologies
-The heuristic and the ESA Factory trigger computation across four major pillars:
-1.  **Causal Inference & Treatment Effects**:
-    *   *Handlers*: Randomized Controlled Trials (RCTs), Instrumental Variables (`AER::ivreg`), Difference-in-Differences (`did`, `bacondecomp`), Regression Discontinuity Design (`rdrobust`), Regression Kink Design, and Synthetic Controls (`Synth`).
-    *   *Estimators*: Functionality explicitly targets the Average Treatment Effect (ATE), Average Treatment Effect on the Treated (ATT), Local Average Treatment Effect (LATE), Marginal Treatment Effects (MTE), and Quantile (QTE).
-2.  **Parametric & Extremum Estimators**:
-    *   *Linear*: OLS and Panel Data Fixed Effects via high-performance engines (`fixest`, `plm`).
-    *   *Non-Linear/Moment based*: Maximum Likelihood Estimation (MLE & QML), Generalized Method of Moments (`gmm`), and Discrete Choice modeling (`mlogit`). Marginal effects are strictly translated via `marginaleffects`.
-3.  **Robust, Machine Learning, & Nonparametric Methods**:
-    *   *Machine Learning & XAI*: High-dimensional variable selection and forecasting via Lasso/Elastic-Net (`glmnet`) and Gradient Boosting (`xgboost`). All ML models are strictly interpreted via Explainable AI (`shapviz`) to satisfy journal transparency requirements.
-    *   *Causal Forests*: Heterogeneous treatment effect discovery via Generalized Random Forests (`grf`).
-    *   *Standard Errors*: Immediate fallback to Heteroskedasticity-Consistent (HC) and cluster-robust Standard Errors (`sandwich`, `lmtest`).
-4.  **Simulation & Resampling**:
-    *   *Compute-Intensive*: Indirect Inference, Method of Simulated Moments (MSM).
-    *   *Monte Carlo*: MCMC frameworks and Metropolis-Hastings (MH) samplers for computationally intractable distributions.
-    *   *Resampling*: Bootstrap handlers for finite-sample distribution variance correction.
-
-### Reproducibility & Code Generation
-*   **Dual-Language Script Auto-generation**: The engine automatically translates Python DataFrames and model logic into highly commented, executable scripts in both **R** and **Stata**.
-    *   **R (Primary Analytical Engine)**: Used to execute the cutting-edge empirical methodologies (e.g., Staggered DiD, Machine Learning, Causal Forests) utilizing the pre-configured `EconoSuite` R environment.
-    *   **Stata (Verification & Submission Engine)**: Stata `.do` scripts are generated simultaneously. This serves a dual purpose: providing an independent algorithmic robustness check (cross-verifying core OLS/IV/FE results against R) and fulfilling strict journal data submission mandates where Stata remains the institutional standard for replication files.
-*   **Replication Package Mandate**: EconoSuite natively complies with the strict AEA/RES Data and Code Availability Policy. For every simulation or empirical run, the orchestrator:
-    1.  Generates a master `makefile` that controls both the R execution and the Stata verification protocols.
-    2.  Hardcodes the pseudo-random generator `seed` across both environments for Monte Carlos.
-    3.  Writes comprehensive `README` documentation (including software versions like Stata 17+, R 4.2+).
-    4.  Outputs proprietary datasets in dual formats (e.g., `.dta` and `.csv`/ASCII).
-
-### The ESA-to-Manuscript Bridge (The Anti-Hallucination Protocol)
-To prevent the LLM from hallucinating standard errors, dropping decimals, or faking significance asterisks, EconoSuite completely decouples statistical execution from text generation through a rigid 3-step bridge:
-1.  **The JSON Export Mandate**: R and Stata scripts are banned from outputting raw console text (e.g., `summary(model)`). Instead, scripts must utilize packages like `broom::tidy()` to extract coefficients, t-statistics, and p-values, exporting them into a strictly formatted, machine-readable `results.json` state file.
-2.  **Deterministic Table Compilation**: The LLM is structurally banned from writing LaTeX tables. Instead, a deterministic Python script (`TableCompiler.py`) reads `results.json` and autonomously generates the `\begin{table}` matrix using `booktabs`, guaranteeing perfect alignment and exact numerical transcription.
-3.  **The Statistical Auditor (Critic Agent)**: When the LLM drafts the "Empirical Results" narrative, it relies on the JSON state file. Before the text is committed to the manuscript, a Critic Agent runs a differential regex scan—cross-referencing every number written in the LLM's text against the `results.json` array. Any mismatch (e.g., writing "0.45" when the JSON states "0.42") triggers a fatal error and forces an immediate redraft.
-
-### Robustness Checks & Falsification
-The orchestrator enforces strict falsification testing categorized by a standard taxonomy: Sub-sample Splits, Alternative Specifications, Moment Selection, Functional Forms, and Out-of-sample Testing.
-*   **Linguistic Precision**: When drafting robustness results, the Unified Engine physically prevents vagueness. Phrases like *"the results are qualitatively the same"* are flagged; the generator must explicitly state which features (sign and relative magnitude) remained constant.
+### 4.3 Reproducibility & Replication Packages
+To achieve 100% compliance with top economics journals, the replication packager enforces the following:
+*   **File Naming Protocol**: All generated replication files, datasets, and scripts must use short, simple string names without spaces, symbols (like `&`), or special characters.
+*   **"Makefiles" for One-Click Replication**: Generates a master `makefile` ensuring all results and tables can be reproduced with a single command execution.
+*   **Universal File Accessibility (ASCII formatting)**: If proprietary formats like Stata's `.dta` are used, the engine automatically generates and includes plain-text ASCII versions (`.csv` or `.txt`) of the data for long-term accessibility.
+*   **Seed Setting**: All simulations strictly enforce pseudo-random generator `seed` hardening across both R and Stata environments.
 
 ---
 
 ## 5. Typography, Formatting & Structural Adherence
 
-Top-tier economic journals (e.g., *American Economic Review* (AEA), *Quarterly Journal of Economics* (QJE)) enforce extremely rigid stylistic guidelines. EconoSuite hardcodes these rules to prevent desk rejections.
+Top-tier economic journals enforce extremely rigid stylistic guidelines. EconoSuite hardcodes these rules into the DOCX Template Compiler, `UnifiedTableEngine`, and `UnifiedFigureEngine`.
 
-### Dynamically Injected Journal Templates
-To eliminate formatting friction, EconoSuite natively parses and adheres to specific journal typesetting templates (`.cls`, `.sty`, or `.bst` files):
-*   **Taylor & Francis 'Interact' Class**: Official routing for the `interact.cls` LaTeX class, ensuring compliance with **Journal of Applied Economics**, **The International Trade Journal**, and **Global Economic Review**. This handles bespoke `natbib` integration for author-year versus APA styles depending on the specific Routledge journal requirements.
-*   **AER / AEJ Styles**: Automated configuration of `aea.cls`, ensuring perfect adherence to frontmatter layout and JEL codes placement.
-*   **Econometrica / QJE Styles**: Dynamic swapping of margin sizes, inter-line spacing, and proof environment formatting.
-*   **Automated Bibliographies**: Native handling of `.bib` database extraction and formatting according to the specific journal's `bibliographystyle`.
+### 5.1 Tables & Figures (`UnifiedTableEngine` & `UnifiedFigureEngine`)
+*   **Rigid Table Constraints**: The `UnifiedTableEngine` strictly enforces a maximum width of **9 columns** (including row headings). If the ESA Engine produces more columns, the `UnifiedTableEngine` autonomously splits the table. All tables are forced into a portrait/vertical orientation.
+*   **Horizontal Lines Only**: Tables must utilize top, middle, and bottom rules. Vertical dividers and shading are strictly prohibited.
+*   **Abolition of Significance Asterisks**: The compilation tool actively strips "stargazing" asterisks (`*`, `**`) from regression tables, enforcing standard errors in parentheses below the coefficients.
+*   **Strict Decimal Formatting**: Decimal fractions uniformly include a leading zero (e.g., 0.357, not .357).
+*   **Alt Text for Figures**: The `UnifiedFigureEngine` mandates the generation of Alternative Text descriptions for all figures. These must be preceded by the exact phrase "Alt text:" and placed directly below the figure legends in the manuscript.
 
-### The `LaTeXMathCompiler.py` & Automated Math Generation
-Generating syntactically perfect LaTeX in a high-throughput, non-interactive environment requires completely decoupling mathematical logic from raw text generation. EconoSuite solves this via a dual-engine approach:
+### 5.2 Mathematical Formatting & EconoSyntax
+Generating syntactically perfect mathematics relies on the DOCX Template Compiler rendering equations seamlessly:
+*   **Mathematical Notation Hierarchy**: Scalar variables are italicized; vectors and matrices are **boldface**; sets use script fonts; number sets use Blackboard bold.
+*   **Consecutive Numbering**: Equations must be numbered consecutively at the left margin using Arabic numerals in parentheses, autonomously managed by the DOCX Template Compiler across the modular slices.
 
-1.  **Macro JSON Injection (Standard Empirical Models)**:
-    *   For core causal inference strategies (IV, DiD, RDD, SCM), the LLM relies entirely on predefined LaTeX macros hardcoded into the template (e.g., `\DiDModel{Dependent}{Treat}{Post}{Error}`).
-    *   The LLM agent only outputs validated JSON schemas (`{"model": "DiD", "dependent": "Y_{it}", ...}`). Python injects this into the preamble, mathematically guaranteeing compilation success without human input.
-2.  **Self-Healing Compilation Loop (Novel Theoretical Proofs)**:
-    *   When the Drafting Agent must generate custom theoretical mathematical modeling (e.g., a specific utility function or game-theoretic equilibrium), it outputs raw LaTeX.
-    *   The orchestrator immediately routes this block into a `/tmp/` sandbox and executes `xelatex -halt-on-error`. If compilation fails due to hallucinated syntax (e.g., mismatched brackets or missing environments), the daemon captures the `.log` trace and autonomously feeds it to a **Debugger Critic Agent**, executing correction loops in the background until it compiles flawlessly.
-3.  **Natural Language to LaTeX Translator (Revision Phase)**:
-    *   While the initial pipeline is fully automated, the **Refinement Phase** allows for "human-in-the-loop" interaction. Instead of manually writing complex LaTeX code, the user provides natural language directives.
-    *   **EconoSuite Shorthand Syntax (EconoSyntax)**: To reduce LLM hallucination during translation, EconoSuite provides a domain-specific pseudo-syntax. The **LaTeX Translator Agent** deterministically parses this into strict Top Five typography without guesswork.
-    *   The Agent isolates the existing math block, reconstructs the precise LaTeX syntax using Econometrica typographical standards, and re-injects standard, compilable code safely into the manuscript.
-
-#### EconoSyntax Comprehensive Mappings
-*(Generated to prevent LLM hallucination and enforce strict Econometrica/AER compliance)*
-
-| EconoSyntax Input | Output LaTeX Rendering Objective | Econometric Context |
-| :--- | :--- | :--- |
-| **1. Expectations & Probabilities** | | |
-| `E[X]` | `E(X)` | Mathematical Expectation. |
-| `Var(X)` | `\text{var}(X)` | Variance (enforced lowercase text). |
-| `Cov(X,Y)` | `\text{cov}(X, Y)` | Covariance. |
-| `Corr(X,Y)` | `\text{corr}(X, Y)` | Correlation. |
-| `dist_as` | `\sim` | "Is distributed as". |
-| `pdf_norm` | `\phi` | Standard normal pdf. |
-| `cdf_norm` | `\Phi` | Standard normal cdf. |
-| `chi_sq` | `\chi^2` | Chi-squared distribution. |
-| **2. Asymptotics & Limits** | | |
-| `plim(X)` | `\text{plim} X_n` | Probability limit. |
-| `converge_p` | `\xrightarrow{p}` | Convergence in probability. |
-| `converge_d` | `\xrightarrow{d}` | Convergence in distribution. |
-| `big_Op(X)` | `O_p(X)` | Probabilistic order (bounded in probability). |
-| `small_op(X)` | `o_p(X)` | Probabilistic order (converges to 0). |
-| **3. Linear Models & Testing** | | |
-| `OLS(y, X)` | `y = \boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}` | Linear Regression (Bold matrix/vectors). |
-| `Hypothesis(R, beta, c)` | `\boldsymbol{R}'\boldsymbol{\beta} = \boldsymbol{c}` | Linear restrictions testing. |
-| `indicator(K)` | `1_K` | Indicator function for condition K. |
-| **4. Advanced Estimators (MLE / GMM)** | | |
-| `MLE_obj(theta)` | `\hat{\boldsymbol{\theta}}_{MLE} = \arg\max_{\boldsymbol{\theta}} \sum_{i=1}^n \log L(\boldsymbol{\theta} \mid y_i, \boldsymbol{x}_i)` | Maximum Likelihood Objective. |
-| `GMM_obj(theta)` | `\hat{\boldsymbol{\theta}}_{GMM} = \arg\min_{\boldsymbol{\theta}} \left[ \frac{1}{n} \sum_{i=1}^n \boldsymbol{g}(y_i, \boldsymbol{x}_i, \boldsymbol{\theta}) \right]' \boldsymbol{W} \left[ \frac{1}{n} \sum_{i=1}^n \boldsymbol{g}(y_i, \boldsymbol{x}_i, \boldsymbol{\theta}) \right]` | Generalized Method of Moments. |
-| **5. Matrix Algebra (Econometrica Style)** | | |
-| `matrix(A)'` | `\boldsymbol{A}'` or `\boldsymbol{A}^0` | Transpose (strictly prevents $A^T$). |
-| `matrix_inv(A)` | `\boldsymbol{A}^{-1}` | Standard inverse. |
-| `matrix_pinv(A)` | `\boldsymbol{A}^{+}` | Moore-Penrose generalized inverse. |
-| `det(A)` | `\lvert\boldsymbol{A}\rvert` or `\det \boldsymbol{A}` | Determinant. |
-| `trace(A)` | `\text{tr}(\boldsymbol{A})` | Trace (and `\text{etr}` for exponential trace). |
-| `rank(A)` | `\text{rk}(\boldsymbol{A})` | Rank of a matrix. |
-| `kronecker(A,B)` | `\boldsymbol{A} \otimes \boldsymbol{B}` | Kronecker product. |
-| `hadamard(A,B)` | `\boldsymbol{A} \odot \boldsymbol{B}` | Hadamard product. |
-| **6. Time Series & Calculus** | | |
-| `lag(x)` | `L x_t` or `B x_t` | Backward shift/lag operator. |
-| `diff(x)` | `\Delta x_t` | Difference operator. |
-| `diff_d(x)` | `\text{d}x` | Roman 'd' for differentials. |
-| `partial(x)` | `\partial x` or `\text{D}x` | Partial derivative. |
-| `grad(f)` | `\nabla f` | Gradient (transpose of derivative). |
-| `hessian(f)` | `\boldsymbol{H}` | Hessian matrix. |
-
-Economic mathematical notation strictness is enforced globally within these pipelines to signal "submission-ready" rigor:
-*   **Basic Notation**: Scalar variables must be italicized. Vectors and matrices **must be designated in boldface** (lowercase bold-italic for vectors, uppercase for matrices). Sets use script fonts, while number systems ($\mathbb{R}, \mathbb{Z}, \mathbb{N}$) natively use Blackboard bold.
-*   **Null Entities**: Enforces the distinct usage of the bold null vector ($\mathbf{0}$) versus the uppercase null matrix ($\mathbf{O}$).
-*   **Fractions & Exponentials**: Forces solidus ($X/Y$) for inline fractions and reserves `\frac{}` for displayed equations. Power of $e$ strictly converts to `\exp(\cdot)`.
-*   **Mathematical Relations**: Natively formats identity (`\equiv`), defines as (`:=`), implies (`\implies`), and asymptotic equivalence (`\sim`).
-
-### 5. Korean Government Protocol Engine (HWPX/OWPML)
-Domestic Korean funding agencies (NRF, KDI, BOK) exclusively mandate grant protocols structured in `.hwp` and `.hwpx` templates (e.g., `신진연구자지원사업` - Early Career Researcher Support Program). To automate these domestic pipelines, EconoSuite shifts away from LaTeX into an autonomous XML injection framework.
-
-1.  **Standardization Gateway**: Due to macOS platform constraints, all legacy binary `.hwp` templates must be converted to the modern, open-standard `.hwpx` (Open Word-Processor Markup Language) format before ingestion.
-2.  **OWPML Payload Injection (The `HWPXGenerator.py`)**: 
-    *   Since a `.hwpx` file is inherently a ZIP archive, the generator mounts into the `Contents/section0.xml` environment.
-    *   Using Python's `lxml` tree parser, the engine isolates pre-ordained mapping boundaries (e.g., `<<RESEARCH_METHODOLOGY>>`) embedded inside the XML `<hp:t>` (paragraph text) tags.
-    *   The Unified Engine drafts pristine Korean text describing the causal inference strategies established in Phase 2, and the Generator injects it seamlessly into the XML DOM without breaking the rigid government formatting conventions (fonts, table paddings).
-3.  **Final Compression**: The mutated XML structure is re-zipped, producing a natively readable `.hwpx` file ready for an agency portal upload.
-
-### Tabular Standards
-*   **Horizontal Lines Only**: Tables must utilize `\toprule`, `\midrule`, and `\bottomrule` (via `booktabs`). Vertical dividers are strictly prohibited.
-*   **Significance & Numerics**: Complete suppression of "stargazing" (asterisks `*`, `**`). Standard errors are stated in parentheses. Decimal fractions uniformly include a leading zero (0.357, not .357).
-
-### Structural Journal Compliance
-*   **Gatekeeping Introduction Segment**: Utilizing the "Keith Head Introduction Formula." The intro (usually 5-6 pages) establishes a hook, the research question, antecedents, and the value-added. Crucially, EconoSuite allocates 25% to 30% of the introduction directly to summarizing the core results before concluding with a structural roadmap.
-*   **Abstract Strictness**: EconoSuite dynamically adjusts abstract constraints based on the target:
-    *   **AER**: Max 100 words, no citations, no title page.
-    *   **QJE**: Max 250 words, separate title page.
-    *   **Econometrica**: ~200 words, anonymous PDF structure.
-
-### Ethics & Disclosure Injection
-*   **Disclosure Statements**: Automatically generates conflict of interest paragraphs and formal AI disclosures per contemporary publisher mandates.
-*   **IRB Stamping**: Forces the inclusion of Institutional Review Board protocol numbers for studies involving human data.
+### 5.3 Journal Compliance & Structure Limits
+*   **The "Keith Head" Introduction Formula:** The engine enforces a 5-step introduction, allocating 25% to 30% of the space directly to summarizing core results.
+*   **The "Table of Contents" Paragraph:** The introduction must conclude with a roadmap paragraph detailing the sequence of subsequent sections.
+*   **Abstract Length Strictness**: Abstract word limits are rigidly enforced based on the target journal: **AER (100 words)**, **REStud (150 words)**, **JPE/Econometrica (~200 words)**, and **QJE (250 words)**.
+*   **Hard Page Limits**: The engine monitors compilation length to ensure manuscripts do not exceed limits (e.g., Main manuscript < 45 typeset pages, Online Appendix < 30 pages).
 
 ---
 
-## 6. Antigravity Daemon & Agentic Orchestration
+## 6. Document Architecture & Output Handlers (Ethics, Disclosures & Submissions)
 
-EconoSuite is fundamentally powered by the **Antigravity Daemon**, which operates as the persistent, background orchestrator driving the entire 10-phase pipeline autonomously.
+EconoSuite strictly saves all generated assets outside the active repository (e.g., `~/EconoSuite_Outputs/[project_name]`).
 
-### Continuous Pipeline Execution & Re-Unification Engine
-Drawing directly from the completed orchestration architecture, the EconoSuite Unified Engine absorbs all entry points through a singular **Run Adapter**.
-*   **State Management via `econosuite_project.yaml`**: The daemon continuously tracks project state, metadata, and pipeline progress using a centralized `econosuite_project.yaml` file. This YAML file is the definitive source of truth for the project. During Phase 1, it is automatically populated and updated directly from the generated `Synopsis.md`. It tracks the current DAG execution state, enabling the daemon to autonomously resume the exact pipeline phase if an API call times out or compilation crashes.
-    *   **The Schema Structure**: The YAML strictly monitors six core arrays: `project_meta` (target journal, language, absolute path to `Synopsis.md`, and the associated NotebookLM Notebook ID/URL), `pipeline_state` (current phase 1-10, error logs), `synopsis_mapping` (causal endpoints, identification strategy), `data_blueprint` (API ingestion paths, dependent/treatment variable mapping), `esa_engine_config` (R Jinja2 template selection, fixed effects), and `compilation_settings` (LaTeX class target).
-*   **Persistent Context & Memory**: The daemon maintains a rolling context by continuously cross-referencing the active pipeline phase against the `econosuite_project.yaml`. This ensures every drafted paragraph strictly adheres to the parameters, datasets, and identification strategies locked in by the original Synopsis.
-*   **Strict No-Fallback Mode**: Silent degradation is permanently banned. If constitutional validation fails or an ESA econometric check throws a mismatch, the engine will halt execution and alert the Debugger Agent rather than inserting a generic "Placeholder." This ensures the integrity of the economic argument.
-*   **Tool & MCP Coordination**: The daemon acts as the central nervous system connecting Python execution environments (ESA Engine, `LaTeXMathCompiler`, LLM Resolvers) with external Model Context Protocol (MCP) servers seamlessly.
-*   **Exclusive Daemon Routing**: Direct, interactive terminal executions are strictly disabled. When operating via CLI, the workflow *must always* route through the isolated Antigravity daemon wrapper. The only explicit exceptions to this background-daemon requirement are when the user is operating within the visual **Tauri Desktop App** or the **Streamlit** web interface.
-    *   **Headless STDIN Isolation**: To prevent pipeline hanging when executed automatically, the daemon explicitly routes `STDIN` to `/dev/null`, preventing third-party packages from requesting interactive confirmations.
-    *   **Context-Aware Machine Output**: Standard output is stripped of verbose human-readable ASCII art and logs. By utilizing concise JSON-log outputs, it preserves the running LLM Agent's token context window.
-*   **Agent Delegation & IPC (Inter-Process Communication)**: To prevent race conditions in parallel DAG execution and avoid file-watcher conflicts with external handlers, EconoSuite adopts advanced daemon isolation:
-    *   **Scoped Directory Auto-Detection**: The engine autonomously detects and routes communications to project-scoped agent directories (e.g., `ECONOSUITE_AGENT_DIR`), ensuring that simultaneous runs do not experience nonce mismatches or stale handshake files.
-    *   **Unix Socket IPC (High Priority Migration)**: The target core architecture explicitly mandates a transition from legacy file-based LLM delegation (prompt/response text files) to robust Unix socket IPC. This upgrade fundamentally eliminates file deletion timing issues and properly enables true concurrent DAG node processing in agent mode.
+### 6.1 The Disclosure Wizard & AI Declarations
+*   **Individualized Disclosure Wizard**: The system mandates the generation of **separate PDF disclosure statements for each individual co-author**, detailing funding sources and conflicts of interest. Crucially, even if an author has no conflicts, the system generates a formal statement explicitly claiming "nothing to disclose."
+*   **AI Usage Declarations**: Generative AI cannot be listed as an author. EconoSuite generates a specific declaration section immediately preceding the references, detailing the tool's name, version, and the purpose of its use (e.g., readability, translation).
+*   **RCT Registry Footnotes**: If the paper involves a Randomized Controlled Trial, the system ensures the RCT is registered and explicitly cites the AEA registry ID in the acknowledgment footnote on the first page.
+*   **JEL Classifications**: The manuscript is tagged with at least three relevant *Journal of Economic Literature* (JEL) codes, placed immediately after the abstract.
+
+### 6.2 Pre-Flight Anonymization Scrubber
+To preserve double-blind peer-review integrity, EconoSuite introduces an **Anonymization Scrubber**. Before generating the final submission package, this pre-flight tool securely removes all identifying author metadata, names, and affiliations from the primary compiled PDF and DOCX files.
 
 ---
 
-## 7. Multi-Agent Integration & Deep Research
+## 7. Antigravity Daemon & Agentic Orchestration
 
-> [!TIP]
-> **NotebookLM MCP / Intelligent Synthesis & Connectivity Hardening**
-> EconoSuite utilizes the `jacob-bd/notebooklm-mcp-cli` for advanced synthesis. By uploading hundreds of working papers and utilizing deep research capabilities alongside the orchestrator, the AI agents can accurately spot identification strategy flaws, literature gaps, and suggest robustness checks based on the latest NBER publications. 
-> 
-> **CRITICAL ARCHITECTURE REQUIREMENT**: NLM is a hard dependency within EconoSuite—if NLM context is unavailable, the workflow must abort rather than silently degrading to fallback searches. To sustain long-running MCP connections during these deep-dive research queries, EconoSuite strictly enforces an **NLM Connectivity Hardening Stack**:
-> * **Provider / CLI Buffer**: Extended localized timeouts (CLI: 120s, MCP Provider: 30s) and exponential backoff retry states.
-> * **Daemon Stack Buffer**: The central orchestration daemon forcibly injects `NOTEBOOKLM_QUERY_TIMEOUT=600` into agent subprocess environments and extends its internal subprocess polling timeout by an additional 600 seconds, guaranteeing that the MCP component processes deep literature scans without premature term signals.
-
----
-
-## 8. Document Architecture & Output Handlers
-
-*   **Global Output Directory**: To prevent repository pollution, EconoSuite strictly saves all generated assets (LaTeX manuscripts, compiled PDFs, Stata replication packages, Makefiles, data extracts, and PRISMA diagrams) outside the active repository. All outputs are explicitly routed to `~/EconoSuite_Outputs/[topic_or_project_name]`.
-*   **Native HWPX Support (Hancom OWPML)**: Aside from standard `.tex` and `.pdf` packages, EconoSuite bridges the domestic-international gap by natively supporting `.hwpx` outputs through Hancom OWPML models. This ensures seamless submissions to Korean policy institutes (e.g., KDI, BOK) and domestic journals without formatting loss. All compiled HWPX protocols are pushed to the global output directory.
-*   **Citation Database Reliability**: The `EndNoteWriter` manages structural integrity, eliminating schema corruption in `.Data` folders during the aggressive citation mapping required for empirical literature reviews.
+The **Antigravity Daemon** operates as the persistent, background orchestrator driving the entire pipeline autonomously.
+*   **State Management via `econosuite_project.yaml`**: The daemon tracks project state, metadata, and the sequence of the modular section tags. This YAML file is the definitive source of truth.
+*   **Agent Delegation & IPC**: The engine relies on Unix Socket IPC and project-scoped directories to manage multi-agent orchestration without race conditions or file-watcher conflicts during the concurrent drafting of Mellel-like sections.
+*   **NLM Connectivity Hardening Stack**: The daemon forcibly extends internal subprocess polling timeouts by 600 seconds to guarantee that the `KnowledgeOrchestrator` can process deep, high-latency literature scans through NotebookLM without premature termination.
