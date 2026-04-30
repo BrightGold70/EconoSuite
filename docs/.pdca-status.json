@@ -1,7 +1,7 @@
 {
   "project": "EconoSuite",
   "current_phase": "design",
-  "last_updated": "2026-04-01T15:00:00+09:00",
+  "last_updated": "2026-04-28T09:30:00+09:00",
   "phases": {
     "plan": "completed",
     "design": "pending",
@@ -9,5 +9,6 @@
     "check": "pending",
     "act": "pending"
   },
-  "active_feature": "econosuite_master_plan.md"
+  "active_feature": "econosuite-foundation-port.plan.md",
+  "previous_feature": "econosuite_master_plan.md (architecture spec; superseded by foundation-port plan as the actionable execution doc)"
 }
