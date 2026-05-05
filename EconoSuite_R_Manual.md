@@ -182,5 +182,35 @@ install.packages("data/statistics/wtor_github_source.tar.gz",
                  type = "source")
 ```
 
+### Scenario 8: Unifying Plot Outputs for the UnifiedFigureEngine
+To seamlessly integrate R-generated statistical figures (like ROC or Kaplan-Meier curves) into the `UnifiedFigureEngine`, you must export both the figure and a "sidecar" JSON metadata file. The engine uses this JSON to autonomously generate mandatory Alt-Text and handle DOCX formatting.
+```R
+library(ggplot2)
+library(jsonlite)
+
+# 1. Generate plot using the universal EconoSuite theme
+p <- ggplot(survival_data, aes(x = time, y = survival, color = treatment)) +
+  geom_step() +
+  theme_minimal() + # Use the standard EconoSuite theme here
+  labs(title = "Overall Survival")
+
+# 2. Export isolated figure with strict alphanumeric name
+ggsave("outputs/figures/fig_km_overall.pdf", plot = p, width = 7, height = 5, dpi = 300)
+
+# 3. Generate sidecar JSON metadata for the UnifiedFigureEngine
+metadata <- list(
+  figure_id = "fig_km_overall",
+  type = "km_survival_curve",
+  title = "Overall Survival by Treatment Cohort",
+  key_statistics = list(
+    log_rank_p_value = 0.024,
+    median_survival_groupA = "14.2 months",
+    median_survival_groupB = "18.5 months"
+  ),
+  source_data = "analysis_cohort_final.csv"
+)
+write_json(metadata, "outputs/figures/fig_km_overall.json", auto_unbox = TRUE)
+```
+
 ---
 *Created for the EconoSuite Project.*
